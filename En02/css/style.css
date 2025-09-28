@@ -1,0 +1,80 @@
+    /* Reset suave */
+    body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+    margin-bottom: 20px;
+    }
+
+    /* Contenedores */
+    .container {
+    max-width: 1100px;
+    }
+
+    /* Catálogo */
+    .card {
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease;
+    }
+    .card:hover {
+    transform: scale(1.02);
+    }
+
+    /* Botones */
+    .btn {
+    border-radius: 6px;
+    }
+    .btn-success {
+    background-color: #198754;
+    border: none;
+    }
+    .btn-success:hover {
+    background-color: #157347;
+    }
+    .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    }
+    .btn-danger:hover {
+    background-color: #bb2d3b;
+    }
+
+    /* Formularios */
+    form input, form select {
+    margin-bottom: 12px;
+    }
+
+    /* Carrito */
+    #carrito div {
+    background: #fff;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    }
+
+    /* Checkout */
+    .checkout-resumen {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    }
+
+    /* Notificaciones */
+    .alert {
+    font-weight: bold;
+    }
+
+    /* Footer simulado */
+    footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    background: #212529;
+    color: #fff;
+    }
