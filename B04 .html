@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EcoMarket — Catálogo con filtros</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+        .catalogo-badge { background: #198754; color: #fff; }
+        .card img { object-fit: cover; height: 200px; }
+        .price-plus { display: flex; gap: .5rem; align-items: center; }
+        .btn-plus {
+        width: 40px; height: 40px; border-radius: 50%;
+        display: inline-flex; align-items: center; justify-content: center;
+        }
+    </style>
+    </head>
+    <body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">ecomarket</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navMain" class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Nosotros</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+            <a href="#" class="text-white"><i class="bi bi-person fs-5"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-cart fs-5"></i></a>
+        </div>
+        </div>
+    </div>
+    </nav>
+
+    <!-- FILTROS -->
+    <section class="bg-light py-3">
+    <div class="container">
+        <div class="row g-3 align-items-center">
+        <!-- Categoría -->
+        <div class="col-12 col-md-3">
+            <select id="filtroCategoria" class="form-select">
+            <option value="">Categoría</option>
+            <option value="frutas">Frutas</option>
+            <option value="verduras">Verduras</option>
+            </select>
+        </div>
+        <!-- Precio -->
+        <div class="col-12 col-md-3">
+            <select id="filtroPrecio" class="form-select">
+            <option value="">Precio</option>
+            <option value="asc">Menor a mayor</option>
+            <option value="desc">Mayor a menor</option>
+            </select>
+        </div>
+        <!-- Buscar -->
+        <div class="col-12 col-md-4">
+            <input id="buscarProducto" type="text" class="form-control" placeholder="Buscar producto...">
+        </div>
+        <!-- Botón aplicar -->
+        <div class="col-12 col-md-2">
+            <button id="aplicarFiltros" class="btn btn-success w-100">Filtrar</button>
+        </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- CATÁLOGO -->
+    <section class="py-3">
+    <div class="container">
+        <div class="row">
+        <div class="col-12 text-center catalogo-badge py-2 rounded">
+            <h4 class="m-0">CATÁLOGO</h4>
+        </div>
+        </div>
+
+        <div id="gridProductos" class="row g-4 mt-1">
+
+        <!-- Lechuga -->
+        <div class="col-12 col-sm-6 col-lg-3 product" 
+            data-categoria="verduras" data-nombre="lechuga escarola" data-precio="1000">
+            <div class="card h-100 shadow-sm">
+            <img src="img/lechuga.jpg.jpg" class="card-img-top" alt="Lechuga escarola" />
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Lechuga escarola</h5>
+                <p class="card-text">Lechuga fresca disponible</p>
+                <p class="text-success fw-semibold mb-3">Hay existencias</p>
+                <div class="mt-auto price-plus">
+                <button class="btn btn-outline-success flex-grow-1">$1000</button>
+                <button class="btn btn-success btn-plus"><i class="bi bi-plus-lg"></i></button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Frutillas -->
+        <div class="col-12 col-sm-6 col-lg-3 product"
+            data-categoria="frutas" data-nombre="frutillas" data-precio="900">
+            <div class="card h-100 shadow-sm">
+            <img src="img/frutillas.jpg.jpg" class="card-img-top" alt="Frutillas" />
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Frutillas</h5>
+                <p class="card-text">Frutillas súper dulces</p>
+                <p class="text-success fw-semibold mb-3">Hay existencias</p>
+                <div class="mt-auto price-plus">
+                <button class="btn btn-outline-success flex-grow-1">$900</button>
+                <button class="btn btn-success btn-plus"><i class="bi bi-plus-lg"></i></button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Tomates -->
+        <div class="col-12 col-sm-6 col-lg-3 product"
+            data-categoria="verduras" data-nombre="tomates" data-precio="1111">
+            <div class="card h-100 shadow-sm">
+            <img src="img/tomates.jpg" class="card-img-top" alt="Tomates" />
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Tomates</h5>
+                <p class="card-text">Tomates frescos rojos</p>
+                <p class="text-success fw-semibold mb-3">Hay existencias</p>
+                <div class="mt-auto price-plus">
+                <button class="btn btn-outline-success flex-grow-1">$1111</button>
+                <button class="btn btn-success btn-plus"><i class="bi bi-plus-lg"></i></button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        </div><!-- gridProductos -->
+    </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script de filtros -->
+    <script>
+    const btn = document.getElementById("aplicarFiltros");
+    const catSel = document.getElementById("filtroCategoria");
+    const precioSel = document.getElementById("filtroPrecio");
+    const buscador = document.getElementById("buscarProducto");
+    const grid = document.getElementById("gridProductos");
+
+    btn.addEventListener("click", () => {
+        const categoria = catSel.value;
+        const precio = precioSel.value;
+        const q = buscador.value.toLowerCase();
+
+        const productos = Array.from(grid.getElementsByClassName("product"));
+
+        productos.forEach(p => {
+        const cat = p.dataset.categoria;
+        const nombre = p.dataset.nombre.toLowerCase();
+        const precioProd = parseInt(p.dataset.precio);
+
+        let visible = true;
+        if (categoria && cat !== categoria) visible = false;
+        if (q && !nombre.includes(q)) visible = false;
+
+        p.style.display = visible ? "" : "none";
+        });
+
+        // Ordenar
+        if (precio) {
+        const visibles = productos.filter(p => p.style.display !== "none");
+        visibles.sort((a, b) => {
+            return precio === "asc"
+            ? a.dataset.precio - b.dataset.precio
+            : b.dataset.precio - a.dataset.precio;
+        });
+        visibles.forEach(el => grid.appendChild(el));
+        }
+    });
+    </script>
+
+    </body>
+    </html>
