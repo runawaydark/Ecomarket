@@ -1,9 +1,8 @@
 {
-"functions": {},
-"rewrites": [
+  "rewrites": [
     {
-    "source": "/(.*)",
-    "destination": "/frontend sprint 3/$1"
+      "source": "/(.*)",
+      "destination": "/frontend sprint 3/$1"
     }
-]
+  ]
 }
