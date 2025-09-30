@@ -2,87 +2,139 @@
 <html lang="es">
     <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>EcoMarket — Inicio</title>
-
-    <!-- Bootstrap + Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-
-    <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoMarket — Frutas y Verduras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
         <a class="navbar-brand fw-bold" href="#">EcoMarket</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div id="navMain" class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="catalogo.html">Catálogo</a></li>
-            <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
-            <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        <div id="navbarNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Nosotros</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart fs-5"></i></a></li>
             </ul>
-            <div class="d-flex align-items-center gap-2">
-            <a href="login.html" class="btn btn-outline-light"><i class="bi bi-person"></i></a>
-            <a href="carrito.html" class="btn btn-success position-relative">
-                <i class="bi bi-cart"></i>
-                <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-            </a>
-            </div>
         </div>
         </div>
     </nav>
 
-    <!-- HERO (Carrusel) -->
-    <header id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carrusel -->
+    <section id="hero" class="mb-5">
+    <div id="carouselEcoMarket" class="carousel slide" data-bs-ride="carousel">
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselEcoMarket" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselEcoMarket" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselEcoMarket" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+        <!-- Slides -->
         <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="assets/img/banner1.jpg" class="d-block w-100" alt="Verduras frescas" />
+            <img src="assets/img/banner1.jpg" class="d-block w-100" alt="Frutas frescas">
             <div class="carousel-caption d-none d-md-block">
-            <h2 class="fw-bold">Frutas y Verduras Orgánicas</h2>
-            <p>De la huerta a tu mesa</p>
+            <h2>Frutas frescas directo del campo</h2>
+            <p>Compra online y recibe en tu casa el mismo día</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="assets/img/banner2.jpg" class="d-block w-100" alt="Frutas de estación" />
+            <img src="assets/img/banner2.jpg" class="d-block w-100" alt="Verduras orgánicas">
             <div class="carousel-caption d-none d-md-block">
-            <h2 class="fw-bold">Promociones de temporada</h2>
-            <p>Productos frescos y saludables</p>
+            <h2>Verduras 100% orgánicas</h2>
+            <p>Sin químicos, frescas y saludables</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="assets/img/banner3.jpg" class="d-block w-100" alt="Apoyo local">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>Apoya a los agricultores locales</h2>
+            <p>EcoMarket conecta productores con tu mesa</p>
             </div>
         </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselEcoMarket" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselEcoMarket" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Siguiente</span>
         </button>
-    </header>
+    </div>
+    </section>
 
-    <!-- CONTENIDO DE PRUEBA -->
-    <main class="container my-5">
-        <h1 class="text-center mb-4">Bienvenido a EcoMarket</h1>
-        <p class="lead text-center">Tu tienda online de frutas y verduras orgánicas, directas de productores locales.</p>
-    </main>
+    <!-- HERO -->
+    <section class="hero d-flex align-items-center text-center text-white">
+        <div class="container">
+        <h1 class="h2 fw-light">Frutas y verduras frescas directo a tu mesa</h1>
+        <p class="lead">Compra online y recibe en tu casa el mismo día</p>
+        <a href="#" class="btn btn-success btn-lg mt-3">Explorar catálogo</a>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="py-5 bg-light text-center">
+        <div class="container">
+        <h2 class="mb-5">¿Por qué elegir EcoMarket?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+            <i class="bi bi-leaf fs-1 text-success"></i>
+            <h5 class="mt-3">Orgánico</h5>
+            <p>Frutas y verduras libres de químicos, frescas y saludables.</p>
+            </div>
+            <div class="col-md-4">
+            <i class="bi bi-truck fs-1 text-success"></i>
+            <h5 class="mt-3">Entrega rápida</h5>
+            <p>Recibe tus compras el mismo día en la puerta de tu casa.</p>
+            </div>
+            <div class="col-md-4">
+            <i class="bi bi-people fs-1 text-success"></i>
+            <h5 class="mt-3">Apoyo local</h5>
+            <p>Apoyas a agricultores de tu zona comprando en EcoMarket.</p>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS DESTACADOS -->
+    <section class="py-5">
+        <div class="container">
+        <h2 class="text-center mb-5">Productos destacados</h2>
+        <div class="row g-4">
+            <!-- Producto -->
+            <div class="col-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <img src="assets/img/lechuga.jpg" class="card-img-top" alt="Lechuga">
+                <div class="card-body text-center">
+                <h5 class="card-title">Lechuga</h5>
+                <p class="card-text">$1.000</p>
+                <a href="#" class="btn btn-success">Agregar</a>
+                </div>
+            </div>
+            </div>
+            <!-- Repite para más productos -->
+        </div>
+        </div>
+    </section>
 
     <!-- FOOTER -->
-    <footer class="bg-dark text-white py-3 mt-auto">
-        <div class="container text-center">
-        <p class="m-0">&copy; 2025 EcoMarket — Todos los derechos reservados.</p>
-        </div>
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="m-0">&copy; 2025 EcoMarket. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- App JS -->
-    <script src="assets/js/app.js"></script>
     </body>
 </html>
