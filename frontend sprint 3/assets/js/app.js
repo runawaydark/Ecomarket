@@ -43,6 +43,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// ==== NAVBAR MOBILE MENU FUNCTIONALITY ====
+document.addEventListener("DOMContentLoaded", () => {
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    // Cerrar menú al hacer clic en un enlace
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navbarCollapse.classList.contains('show')) {
+                navbarToggler.click(); // Simular clic en el botón para cerrar
+            }
+        });
+    });
+
+    // Cerrar menú al hacer clic fuera de él
+    document.addEventListener('click', (event) => {
+        const navbar = document.querySelector('.navbar');
+        const isClickInsideNavbar = navbar.contains(event.target);
+        
+        if (!isClickInsideNavbar && navbarCollapse.classList.contains('show')) {
+            navbarToggler.click(); // Simular clic en el botón para cerrar
+        }
+    });
+});
+
 // ==== FOOTER ACCORDION FUNCTIONALITY ====
 function toggleAccordion(sectionId) {
     // Solo funciona en móviles (pantallas menores a 769px)

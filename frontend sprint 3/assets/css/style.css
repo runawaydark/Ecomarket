@@ -2,6 +2,16 @@
 .navbar {
     padding: 0.8rem 2rem;
     font-size: 0.95rem;
+    min-height: 60px; /* Altura mínima para evitar superposiciones */
+    position: relative; /* Necesario para el posicionamiento del menú colapsado */
+}
+
+/* Mejor organización del contenedor del navbar */
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .navbar-brand {
@@ -53,7 +63,8 @@
     .navbar .d-flex a, 
     .navbar .dropdown > a {
         font-size: 1.3rem;
-        margin: 0 0.3rem;
+        margin: 0 0.2rem;
+        padding: 0.4rem;
     }
     
     .badge {
@@ -66,6 +77,7 @@
     /* Botón hamburguesa en móvil */
     .custom-toggler {
         padding: 6px 8px;
+        margin-right: 20px; /* Más separación en móvil */
     }
     
     .custom-toggler-icon {
@@ -77,12 +89,25 @@
     .custom-toggler-icon span {
         height: 2.5px;
     }
+
+    /* Contenedor de iconos en móvil */
+    .navbar .d-flex {
+        margin-left: 15px;
+        gap: 0.5rem; /* Espacio entre iconos */
+    }
 }
 
 
 /* CARRUSEL */
 #hero {
   margin-top: 76px; /* Compensar navbar fijo */
+}
+
+/* Ajuste para móvil cuando el navbar es sticky */
+@media (max-width: 991.98px) {
+  #hero {
+    margin-top: 60px; /* Altura menor en móvil */
+  }
 }
 
 .carousel-item img {
@@ -549,6 +574,13 @@
     padding: 0.8rem 1rem;
 }
 
+/* Padding específico para móvil */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.6rem 1rem;
+    }
+}
+
 /* Custom hamburger menu button */
 .custom-toggler {
     border: none;
@@ -557,6 +589,7 @@
     border-radius: 4px;
     background-color: transparent;
     transition: all 0.3s ease;
+    margin-right: 15px; /* Separación del botón hamburguesa de los iconos */
 }
 
 .custom-toggler:hover {
@@ -591,50 +624,103 @@
     background-color: #ffdd57;
 }
 
+/* Animación sutil del botón hamburguesa cuando el menú está abierto */
+.custom-toggler[aria-expanded="true"] .custom-toggler-icon span {
+    background-color: #ffdd57;
+}
+
+.custom-toggler[aria-expanded="true"]:hover .custom-toggler-icon span {
+    background-color: #ffffff;
+}
+
 /* Menú colapsado en móvil */
 @media (max-width: 991.98px) {
     .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
         background-color: #008c5a;
-        margin-top: 1rem;
+        margin-top: 0;
         padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        width: 100%;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
+    /* Animación para el menú colapsado */
+    .navbar-collapse.collapsing {
+        transition: height 0.35s ease;
+    }
+
+    .navbar-collapse.show {
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
 
     .navbar-nav {
         text-align: center;
+        margin-bottom: 1rem;
     }
 
     .navbar-nav .nav-item {
-        margin: 0.5rem 0;
+        margin: 0.3rem 0;
     }
 
     .navbar-nav .nav-link {
         padding: 0.75rem 1rem;
         border-radius: 4px;
         transition: background-color 0.3s ease;
+        display: block;
+        color: #ffffff !important;
+        font-weight: 500;
     }
 
     .navbar-nav .nav-link:hover,
     .navbar-nav .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffdd57 !important;
     }
 
     /* Barra de búsqueda en móvil */
     .navbar-collapse form {
-        margin: 1rem 0;
+        margin: 0.5rem 0 1rem 0;
+        padding: 0 0.5rem;
     }
 
     .navbar-collapse .form-control {
-        background-color: rgba(255, 255, 255, 0.9);
-        border: none;
-        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
         padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        color: #333;
     }
 
     .navbar-collapse .form-control:focus {
-        box-shadow: 0 0 0 2px rgba(255, 221, 87, 0.5);
+        box-shadow: 0 0 0 3px rgba(255, 221, 87, 0.3);
         background-color: white;
+        border-color: #ffdd57;
+        outline: none;
+    }
+
+    .navbar-collapse .form-control::placeholder {
+        color: #666;
+        opacity: 0.8;
     }
 }
 
@@ -643,7 +729,7 @@
 .navbar .dropdown > a {
     color: #ffffff;
     font-size: 1.4rem;
-    margin: 0 0.5rem;
+    margin: 0 0.3rem;
     text-decoration: none;
     transition: all 0.3s ease;
     padding: 0.5rem;
@@ -655,6 +741,11 @@
     color: #ffdd57;
     background-color: rgba(255, 255, 255, 0.1);
     transform: scale(1.1);
+}
+
+/* Contenedor de iconos con mejor espaciado */
+.navbar .d-flex {
+    margin-left: 10px; /* Separación adicional del contenedor de iconos */
 }
 
 /* Dropdown del usuario mejorado */
