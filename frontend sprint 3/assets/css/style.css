@@ -50,3 +50,150 @@
 .card .btn:hover {
   background-color: #145a32;
 }
+
+/* ==== FOOTER ==== */
+.footer {
+  background: #008b5c;
+  color: white;
+  padding-top: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Barra superior del footer */
+.footer-top {
+    background: linear-gradient(180deg, #ff9800, #ffb84d);
+    padding: 6px 0; /* más delgada */
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    line-height: 1.6em; /* centra verticalmente el texto */
+}
+
+/* Contenedor principal del footer */
+.footer-container, .footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%; /* ahora ocupa todo el ancho */
+    margin: 0;   /* elimina márgenes laterales */
+    padding: 30px 20px;
+}
+
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Títulos de secciones */
+.footer-section h4 {
+    font-size: 1.2em;
+    color: #fff; /* Blanco puro */
+    margin-bottom: 10px;
+    text-align: left; /* alineado a la izquierda */
+}
+
+/* Links del footer */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #cccccc; /* gris claro */
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #ffffff; /* se vuelve blanco */
+}
+
+/* Línea divisoria sutil */
+.footer-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+}
+
+/* Texto final */
+.footer-bottom {
+    text-align: center;
+    color: #bbb;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 30px 20px;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+  margin: 15px;
+  text-align: left;
+}
+
+.footer-section h4 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 15px 10px;
+  background: #007a50;
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 900px) {
+  .footer-content {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-section {
+    text-align: center;
+  }
+}
+
