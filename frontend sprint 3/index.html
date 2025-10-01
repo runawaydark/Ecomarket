@@ -20,9 +20,10 @@
         <a class="navbar-brand fw-bold" href="#">EcoMarket</a>
 
         <!-- Botón Hamburguesa -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
+            <span class="navbar-toggler-icon"></span>
         </button>
+
 
         <!-- Links -->
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -56,8 +57,13 @@
             <!-- Contador dinámico -->
             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             0
-            </span>
+            </span>  
         </a>
+        
+        <form class="d-none d-lg-flex ms-3" role="search">
+            <input class="form-control form-control-sm" type="search" placeholder="Que buscas?" aria-label="Buscar">
+        </form>
+
         </div>
     </div>
     </nav>
