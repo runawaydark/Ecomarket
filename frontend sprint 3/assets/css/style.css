@@ -1,3 +1,45 @@
+/* NAVBAR */
+.navbar {
+    padding: 0.8rem 2rem;
+    font-size: 0.95rem;
+}
+
+.navbar-brand {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    margin-right: 1rem;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffdd57; /* Amarillo suave para destacar */
+}
+
+/* Íconos a la derecha */
+.navbar .d-flex a {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+    text-decoration: none;
+}
+
+/* Hover para íconos */
+.navbar .d-flex a:hover {
+    color: #ffdd57;
+}
+
+/* Badge del carrito */
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+}
+
+
 /* CARRUSEL */
 #hero {
   margin-top: 76px; /* Compensar navbar fijo */
@@ -197,3 +239,58 @@
   }
 }
 
+/* Estilo del dropdown */
+.dropdown-menu {
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0; /* Sin padding para que los items ocupen todo el espacio */
+  background-color: #ffffff !important; /* Fondo blanco sólido */
+  min-width: 180px;
+  max-width: 200px; /* Limita el ancho máximo */
+  overflow: hidden; /* Evita que el contenido se desborde */
+}
+
+.dropdown-menu .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 12px 0; /* Solo padding vertical */
+    padding-left: 16px; /* Padding izquierdo específico */
+    padding-right: 16px; /* Padding derecho específico */
+    color: #333333 !important; /* Texto oscuro para contraste */
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    margin: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    /* Asegura que el elemento cubra todo el ancho del contenedor */
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Hover effect mejorado */
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+    background-color: #008c5a !important; /* Verde de la navbar */
+    color: #ffffff !important; /* Texto blanco en hover */
+    font-weight: 600;
+    /* Asegura que el fondo cubra completamente */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+}
+
+/* Estilo para el divider */
+.dropdown-menu .dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: #e9ecef;
+}
+
+/* Active state para mejor feedback */
+.dropdown-menu .dropdown-item:active {
+    background-color: #007a50 !important;
+    color: #ffffff !important;
+}
