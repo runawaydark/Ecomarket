@@ -35,8 +35,33 @@
 
 /* Badge del carrito */
 .badge {
-    font-size: 0.75rem;
-    padding: 4px 6px;
+    font-size: 0.65rem;
+    padding: 3px 5px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajustes específicos para móvil */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+    
+    .navbar .d-flex a, 
+    .navbar .dropdown > a {
+        font-size: 1.3rem;
+        margin: 0 0.3rem;
+    }
+    
+    .badge {
+        font-size: 0.6rem;
+        padding: 2px 4px;
+        min-width: 16px;
+        height: 16px;
+    }
 }
 
 
@@ -178,12 +203,12 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 30px 20px;
+  padding: 20px 20px;
 }
 
 .footer-section {
   flex: 1 1 200px;
-  margin: 15px;
+  margin: 0 15px;
   text-align: left;
 }
 
@@ -233,9 +258,75 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 15px 20px;
   }
   .footer-section {
     text-align: center;
+    margin: 0;
+    width: 100%;
+  }
+}
+
+/* ==== FOOTER ACCORDION ==== */
+.footer-accordion-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  margin: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.footer-accordion-header:hover {
+  color: #ffdd57;
+  border-bottom-color: #ffdd57;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+  font-size: 0.9em;
+}
+
+.accordion-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.footer-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, opacity 0.3s ease, padding 0.3s ease;
+  opacity: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.footer-accordion-content.active {
+  max-height: 300px;
+  opacity: 1;
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
+
+/* Mejoras para móvil */
+@media (max-width: 768px) {
+  .footer-accordion-header {
+    font-size: 1.1em;
+    padding: 15px 0;
+    margin: 0;
+  }
+  
+  .footer-accordion-content.active {
+    max-height: 250px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+  }
+  
+  .footer-section {
+    margin: 0 10px;
   }
 }
 
@@ -324,4 +415,199 @@
 .navbar .d-flex a:hover {
     transform: scale(1.1);
     color: #ffdd57;
+}
+
+/* CATEGORÍAS */
+.category-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.category-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover img {
+  transform: scale(1.05);
+}
+
+.category-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 12px;
+  background: rgba(0, 140, 90, 0.85); /* verde translúcido */
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.category-card:hover .category-overlay {
+  background: rgba(220, 53, 69, 0.9); /* rojo al hover */
+}
+
+.category-overlay h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.navbar-toggler {
+  border: none;
+}
+.navbar-toggler-icon {
+  background-color: white; /* Ícono hamburguesa blanco */
+  border-radius: 4px;
+}
+
+/* ================= NAVBAR ================= */
+
+/* Mejoras para la navbar */
+.navbar {
+    padding: 0.8rem 1rem;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+    order: 2;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Menú colapsado en móvil */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: #008c5a;
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0.5rem 0;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Barra de búsqueda en móvil */
+    .navbar-collapse form {
+        margin: 1rem 0;
+    }
+
+    .navbar-collapse .form-control {
+        background-color: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 20px;
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar-collapse .form-control:focus {
+        box-shadow: 0 0 0 2px rgba(255, 221, 87, 0.5);
+        background-color: white;
+    }
+}
+
+/* Iconos del usuario y carrito */
+.navbar .d-flex a, 
+.navbar .dropdown > a {
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin: 0 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+.navbar .d-flex a:hover, 
+.navbar .dropdown > a:hover {
+    color: #ffdd57;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+/* Dropdown del usuario mejorado */
+.dropdown-menu {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    background-color: #ffffff;
+    min-width: 200px;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        min-width: 180px;
+        right: 0 !important;
+        left: auto !important;
+    }
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer {
+  padding: 40px 20px;
+  background-color: #008c5a;
+  color: #fff;
+}
+
+.footer a {
+  text-decoration: none;
+  color: #e0e0e0;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #ffd700;
+}
+
+/* Footer responsivo */
+@media (max-width: 768px) {
+  .footer {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .footer .row {
+    display: block;
+  }
+
+  .footer h5 {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #fff;
+  }
+
+  .footer a {
+    display: block;
+    margin: 6px 0;
+  }
 }

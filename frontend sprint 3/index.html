@@ -14,56 +14,60 @@
 
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008c5a;">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #008c5a;">
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand fw-bold" href="#">EcoMarket</a>
 
-        <!-- Botón Hamburguesa -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
+        <!-- Iconos fijos a la derecha (siempre visibles) -->
+        <div class="d-flex align-items-center gap-2 order-lg-3">
+            <!-- Dropdown Usuario -->
+            <div class="dropdown">
+                <a href="#" class="text-white" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person fs-5"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="login.html">Iniciar sesión</a></li>
+                <li><a class="dropdown-item" href="#">Mis pedidos</a></li>
+                <li><a class="dropdown-item" href="#">Ver carrito</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item d-none" id="logoutBtn" href="#">Cerrar sesión</a></li>
+                </ul>
+            </div>
+
+            <!-- Carrito -->
+            <a href="#" class="text-white position-relative">
+                <i class="bi bi-cart fs-5"></i>
+                <!-- Contador dinámico -->
+                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                </span>  
+            </a>
+        </div>
+
+        <!-- Botón Hamburguesa (corregido) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-
-        <!-- Links -->
+        <!-- Links del menú -->
         <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Nosotros</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-        </ul>
-        </div>
-
-        <!-- Iconos fijos a la derecha -->
-        <div class="d-flex align-items-center gap-3">
-        <!-- Dropdown Usuario -->
-        <div class="dropdown">
-            <a href="#" class="text-white dropdown-toggle" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person fs-5"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="login.html">Iniciar sesión</a></li>
-            <li><a class="dropdown-item" href="#">Mis pedidos</a></li>
-            <li><a class="dropdown-item" href="#">Ver carrito</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item d-none" id="logoutBtn" href="#">Cerrar sesión</a></li>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
             </ul>
-        </div>
-
-        <!-- Carrito -->
-        <a href="#" class="text-white position-relative me-3">
-            <i class="bi bi-cart fs-5"></i>
-            <!-- Contador dinámico -->
-            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            0
-            </span>  
-        </a>
-        
-        <form class="d-none d-lg-flex ms-3" role="search">
-            <input class="form-control form-control-sm" type="search" placeholder="Que buscas?" aria-label="Buscar">
-        </form>
-
+            
+            <!-- Barra de búsqueda (visible en móvil dentro del menú colapsado) -->
+            <form class="d-lg-none mt-2 mb-2" role="search">
+                <input class="form-control" type="search" placeholder="¿Qué buscas?" aria-label="Buscar">
+            </form>
+            
+            <!-- Barra de búsqueda desktop (solo visible en desktop) -->
+            <form class="d-none d-lg-flex" role="search">
+                <input class="form-control form-control-sm" type="search" placeholder="¿Qué buscas?" aria-label="Buscar">
+            </form>
         </div>
     </div>
     </nav>
@@ -114,6 +118,44 @@
         </button>
     </div>
     </section>
+
+        <!-- CATEGORÍAS RECOMENDADAS -->
+    <section class="container my-5">
+    <h2 class="text-center mb-4">Explora por categorías</h2>
+    <div class="row g-4">
+        <!-- Frutas -->
+        <div class="col-lg-3 col-md-6 col-12">
+        <a href="#" class="category-card">
+            <img src="assets/img/frutas.png" alt="Frutas" class="img-fluid rounded shadow">
+            <div class="category-overlay">Frutas</div>
+        </a>
+        </div>
+        <!-- Verduras -->
+        <div class="col-lg-3 col-md-6 col-12">
+        <a href="#" class="category-card">
+            <img src="assets/img/verduras.png" alt="Verduras" class="img-fluid rounded shadow">
+            <div class="category-overlay">Verduras</div>
+        </a>
+        </div>
+        <!-- Despensa -->
+        <div class="col-lg-3 col-md-6 col-12">
+        <a href="#" class="category-card">
+            <img src="assets/img/despensa.png" alt="Despensa" class="img-fluid rounded shadow">
+            <div class="category-overlay">Despensa</div>
+        </a>
+        </div>
+        <!-- Ofertas -->
+        <div class="col-lg-3 col-md-6 col-12">
+        <a href="#" class="category-card">
+            <img src="assets/img/ofertas.png" alt="Ofertas" class="img-fluid rounded shadow">
+            <div class="category-overlay">Ofertas</div>
+        </a>
+        </div>
+    </div>
+    </section>
+
+
+
 
     <!-- HERO -->
     <section class="hero d-flex align-items-center text-center text-white">
@@ -234,41 +276,49 @@
     </div>
     <div class="footer-content">
         <div class="footer-section">
-        <h4>PASILLOS</h4>
-        <ul>
-            <li><a href="#">Frutas</a></li>
-            <li><a href="#">Verduras</a></li>
-            <li><a href="#">Despensa</a></li>
-            <li><a href="#">Ofertas</a></li>
-        </ul>
+            <h4 class="footer-accordion-header" onclick="toggleAccordion('pasillos')">
+                PASILLOS <i class="bi bi-chevron-down accordion-icon" id="pasillos-icon"></i>
+            </h4>
+            <ul class="footer-accordion-content" id="pasillos-content">
+                <li><a href="#">Frutas</a></li>
+                <li><a href="#">Verduras</a></li>
+                <li><a href="#">Despensa</a></li>
+                <li><a href="#">Ofertas</a></li>
+            </ul>
         </div>
 
         <div class="footer-section">
-        <h4>PÁGINAS</h4>
-        <ul>
-            <li><a href="#">Nosotros</a></li>
-            <li><a href="#">Catálogo</a></li>
-            <li><a href="#">Contacto</a></li>
-            <li><a href="#">Blog</a></li>
-        </ul>
+            <h4 class="footer-accordion-header" onclick="toggleAccordion('paginas')">
+                PÁGINAS <i class="bi bi-chevron-down accordion-icon" id="paginas-icon"></i>
+            </h4>
+            <ul class="footer-accordion-content" id="paginas-content">
+                <li><a href="#">Nosotros</a></li>
+                <li><a href="#">Catálogo</a></li>
+                <li><a href="#">Contacto</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
         </div>
 
         <div class="footer-section">
-        <h4>CONTACTO</h4>
-        <ul>
-            <li><a href="#">WhatsApp</a></li>
-            <li><a href="#">Correo</a></li>
-            <li><a href="#">Instagram</a></li>
-        </ul>
+            <h4 class="footer-accordion-header" onclick="toggleAccordion('contacto')">
+                CONTACTO <i class="bi bi-chevron-down accordion-icon" id="contacto-icon"></i>
+            </h4>
+            <ul class="footer-accordion-content" id="contacto-content">
+                <li><a href="#">WhatsApp</a></li>
+                <li><a href="#">Correo</a></li>
+                <li><a href="#">Instagram</a></li>
+            </ul>
         </div>
 
         <div class="footer-section">
-        <h4>POLÍTICAS</h4>
-        <ul>
-            <li><a href="#">Términos de servicio</a></li>
-            <li><a href="#">Política de privacidad</a></li>
-            <li><a href="#">Política de devoluciones</a></li>
-        </ul>
+            <h4 class="footer-accordion-header" onclick="toggleAccordion('politicas')">
+                POLÍTICAS <i class="bi bi-chevron-down accordion-icon" id="politicas-icon"></i>
+            </h4>
+            <ul class="footer-accordion-content" id="politicas-content">
+                <li><a href="#">Términos de servicio</a></li>
+                <li><a href="#">Política de privacidad</a></li>
+                <li><a href="#">Política de devoluciones</a></li>
+            </ul>
         </div>
     </div>
 
