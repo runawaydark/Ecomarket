@@ -431,61 +431,48 @@
 
 /* Estilo del dropdown */
 .dropdown-menu {
-  border-radius: 8px;
+  border-radius: 6px;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 0; /* Sin padding para que los items ocupen todo el espacio */
-  background-color: #ffffff !important; /* Fondo blanco sólido */
-  min-width: 180px;
-  max-width: 200px; /* Limita el ancho máximo */
-  overflow: hidden; /* Evita que el contenido se desborde */
+  padding: 4px 0; /* Pequeño padding vertical */
+  background-color: #ffffff !important;
+  min-width: 160px; /* Reducido para contenido más compacto */
+  max-width: 180px; /* Reducido */
+  overflow: hidden;
 }
 
+/* Estilo consolidado para dropdown items */
 .dropdown-menu .dropdown-item {
     display: block;
     width: 100%;
-    padding: 12px 0; /* Solo padding vertical */
-    padding-left: 16px; /* Padding izquierdo específico */
-    padding-right: 16px; /* Padding derecho específico */
-    color: #333333 !important; /* Texto oscuro para contraste */
+    padding: 8px 12px;
+    color: #333333 !important;
     font-weight: 500;
+    font-size: 0.8rem; /* Letra más pequeña - reducido de 0.9rem */
     background-color: transparent;
     border: none;
     text-decoration: none;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease, color 0.2s ease;
     margin: 0;
-    border-radius: 0;
+    border-radius: 0 !important;
     box-sizing: border-box;
-    /* Asegura que el elemento cubra todo el ancho del contenedor */
-    margin-left: 0;
-    margin-right: 0;
 }
 
-/* Hover effect mejorado */
+/* Hover effect - sin zoom, solo cambio de color */
 .dropdown-menu .dropdown-item:hover,
 .dropdown-menu .dropdown-item:focus {
-    background-color: #008c5a !important; /* Verde de la navbar */
-    color: #ffffff !important; /* Texto blanco en hover */
-    font-weight: 600;
-    /* Asegura que el fondo cubra completamente */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    width: 100% !important;
-}
-
-.dropdown-menu .dropdown-item {
-    padding: 10px 16px; /* más compacto */
-}
-
-
-.dropdown-menu .dropdown-item {
-    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: #008c5a !important;
+    color: #ffffff !important;
+    font-weight: 500; /* Sin aumento de peso */
+    border-radius: 0 !important;
+    margin: 0 !important;
+    transform: none; /* Sin transformaciones/zoom */
 }
 
 @media (max-width: 600px) {
     .dropdown-menu {
-        min-width: 220px;
-        font-size: 1rem;
+        min-width: 200px; /* Reducido también el ancho en móvil */
+        font-size: 0.8rem; /* Letra más pequeña en móvil también */
     }
 }
 
@@ -505,6 +492,7 @@
 .dropdown-menu .dropdown-item:active {
     background-color: #007a50 !important;
     color: #ffffff !important;
+    border-radius: 0 !important; /* Mantiene bordes rectangulares en active */
 }
 
 
@@ -512,7 +500,7 @@
     transition: transform 0.2s ease, color 0.3s ease;
 }
 .navbar .d-flex a:hover {
-    transform: scale(1.1);
+    transform: scale(1.05); /* Reducido el zoom */
     color: #ffdd57;
 }
 
@@ -740,7 +728,12 @@
 .navbar .dropdown > a:hover {
     color: #ffdd57;
     background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(1.1);
+    transform: scale(1.05); /* Reducido el zoom */
+}
+
+/* Evitar zoom en el dropdown cuando está abierto */
+.navbar .dropdown.show > a:hover {
+    transform: none;
 }
 
 /* Contenedor de iconos con mejor espaciado */
@@ -748,16 +741,7 @@
     margin-left: 10px; /* Separación adicional del contenedor de iconos */
 }
 
-/* Dropdown del usuario mejorado */
-.dropdown-menu {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    padding: 0.5rem 0;
-    background-color: #ffffff;
-    min-width: 200px;
-    margin-top: 0.5rem;
-}
+/* Dropdown del usuario mejorado - ELIMINADO (duplicado) */
 
 @media (max-width: 768px) {
     .dropdown-menu {
