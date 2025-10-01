@@ -37,8 +37,16 @@
   z-index: 2;
 }
 
-/* Cards de productos */
+/* cards de productos */
 .card img {
   height: 200px;
   object-fit: cover;
+}
+
+.card .btn {
+  transition: 0.3s;
+}
+
+.card .btn:hover {
+  background-color: #145a32;
 }
