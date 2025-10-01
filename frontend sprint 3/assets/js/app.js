@@ -45,31 +45,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ==== FOOTER ACCORDION FUNCTIONALITY ====
 function toggleAccordion(sectionId) {
-    const content = document.getElementById(sectionId + '-content');
-    const icon = document.getElementById(sectionId + '-icon');
+    // Solo funciona en móviles (pantallas menores a 769px)
+    if (window.innerWidth <= 768) {
+        const content = document.getElementById(sectionId + '-content');
+        const icon = document.getElementById(sectionId + '-icon');
+        
+        if (content.classList.contains('active')) {
+            // Cerrar el acordeón
+            content.classList.remove('active');
+            icon.classList.remove('rotated');
+        } else {
+            // Abrir el acordeón
+            content.classList.add('active');
+            icon.classList.add('rotated');
+        }
+    }
+}
+
+// Función para manejar el cambio de tamaño de ventana
+function handleResize() {
+    const accordionContents = document.querySelectorAll('.footer-accordion-content');
+    const accordionIcons = document.querySelectorAll('.accordion-icon');
     
-    if (content.classList.contains('active')) {
-        // Cerrar el acordeón
-        content.classList.remove('active');
-        icon.classList.remove('rotated');
+    if (window.innerWidth > 768) {
+        // Desktop: mostrar todo el contenido
+        accordionContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        accordionIcons.forEach(icon => {
+            icon.classList.remove('rotated');
+        });
     } else {
-        // Abrir el acordeón
-        content.classList.add('active');
-        icon.classList.add('rotated');
+        // Móvil: cerrar todos por defecto
+        accordionContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        accordionIcons.forEach(icon => {
+            icon.classList.remove('rotated');
+        });
     }
 }
 
 // Inicializar el estado de los acordeones al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
-    // Por defecto, todos los acordeones están cerrados
-    const accordionContents = document.querySelectorAll('.footer-accordion-content');
-    accordionContents.forEach(content => {
-        content.classList.remove('active');
-    });
+    handleResize();
     
-    // Por defecto, todos los íconos apuntan hacia abajo
-    const accordionIcons = document.querySelectorAll('.accordion-icon');
-    accordionIcons.forEach(icon => {
-        icon.classList.remove('rotated');
-    });
+    // Escuchar cambios en el tamaño de ventana
+    window.addEventListener('resize', handleResize);
 });

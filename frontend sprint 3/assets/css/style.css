@@ -203,13 +203,34 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 20px 20px;
+  padding: 30px 20px;
 }
 
 .footer-section {
   flex: 1 1 200px;
-  margin: 0 15px;
   text-align: left;
+}
+
+/* Espaciado diferente para desktop vs móvil */
+@media (min-width: 769px) {
+  .footer-section {
+    margin: 0 20px;
+  }
+  
+  .footer-section h4 {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    padding: 15px 20px;
+  }
+  
+  .footer-section {
+    margin: 0;
+    width: 100%;
+  }
 }
 
 .footer-section h4 {
@@ -268,47 +289,85 @@
 }
 
 /* ==== FOOTER ACCORDION ==== */
-.footer-accordion-header {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  margin: 0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  user-select: none;
+
+/* Desktop: Footer normal (sin acordeón) */
+@media (min-width: 769px) {
+  .footer-accordion-header {
+    cursor: default;
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-bottom: none;
+    transition: none;
+    user-select: none;
+  }
+
+  .footer-accordion-header:hover {
+    color: #ffffff;
+    border-bottom-color: transparent;
+  }
+
+  .accordion-icon {
+    display: none; /* Ocultar iconos en desktop */
+  }
+
+  .footer-accordion-content {
+    max-height: none !important;
+    overflow: visible;
+    transition: none;
+    opacity: 1 !important;
+    margin-top: 15px;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: block !important;
+  }
 }
 
-.footer-accordion-header:hover {
-  color: #ffdd57;
-  border-bottom-color: #ffdd57;
-}
+/* Móvil: Acordeón funcional */
+@media (max-width: 768px) {
+  .footer-accordion-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    margin: 0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    user-select: none;
+  }
 
-.accordion-icon {
-  transition: transform 0.3s ease;
-  font-size: 0.9em;
-}
+  .footer-accordion-header:hover {
+    color: #ffdd57;
+    border-bottom-color: #ffdd57;
+  }
 
-.accordion-icon.rotated {
-  transform: rotate(180deg);
-}
+  .accordion-icon {
+    transition: transform 0.3s ease;
+    font-size: 0.9em;
+    display: inline-block;
+  }
 
-.footer-accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out, opacity 0.3s ease, padding 0.3s ease;
-  opacity: 0;
-  margin-top: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
+  .accordion-icon.rotated {
+    transform: rotate(180deg);
+  }
 
-.footer-accordion-content.active {
-  max-height: 300px;
-  opacity: 1;
-  padding-top: 10px;
-  padding-bottom: 15px;
+  .footer-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.3s ease, padding 0.3s ease;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .footer-accordion-content.active {
+    max-height: 300px;
+    opacity: 1;
+    padding-top: 10px;
+    padding-bottom: 15px;
+  }
 }
 
 /* Mejoras para móvil */
