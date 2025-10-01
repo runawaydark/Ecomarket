@@ -792,3 +792,23 @@
     margin: 6px 0;
   }
 }
+
+/* Tarjeta de login */
+.card {
+  border-radius: 12px;
+}
+
+/* Input con focus */
+.form-control:focus {
+  border-color: #008c5a;
+  box-shadow: 0 0 4px rgba(0, 140, 90, 0.5);
+}
+
+/* Botón login */
+.btn-success {
+  background-color: #008c5a;
+  border: none;
+}
+.btn-success:hover {
+  background-color: #006f47;
+}
