@@ -28,8 +28,8 @@
 
             <!-- Iconos -->
             <div class="d-flex align-items-center gap-3">
-            <a href="login.html" class="text-white"><i class="bi bi-person fs-5"></i></a>
-            <a href="#" class="text-white position-relative">
+            <a href="login.html" class="text-white" title="Iniciar sesión"><i class="bi bi-person fs-5"></i></a>
+            <a href="carrito.html" class="text-white position-relative" title="Carrito de compras">
                 <i class="bi bi-cart fs-5"></i>
                 <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
             </a>
@@ -530,138 +530,7 @@
     <div id="footer-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Función para obtener parámetros de la URL
-        function getURLParameter(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
 
-        // Función para aplicar filtros basados en la URL
-        function aplicarFiltroURL() {
-            const categoria = getURLParameter('categoria');
-            
-            if (categoria) {
-                // Marcar el checkbox correspondiente
-                const checkbox = document.getElementById(`categoria-${categoria}`);
-                if (checkbox) {
-                    checkbox.checked = true;
-                    
-                    // Actualizar el título para mostrar la categoría filtrada
-                    const titulo = document.querySelector('section.py-5 h1');
-                    const categoriaCapitalizada = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-                    titulo.textContent = `Catálogo - ${categoriaCapitalizada}`;
-                    
-                    // Agregar clase visual para indicar filtro activo
-                    checkbox.parentElement.style.fontWeight = 'bold';
-                    checkbox.parentElement.style.color = '#008c5a';
-                }
-                
-                console.log(`Filtro aplicado: ${categoria}`);
-            }
-        }
-
-        // Función para limpiar todos los filtros
-        function limpiarFiltros() {
-            // Desmarcar todos los checkboxes
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="categoria-"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-                checkbox.parentElement.style.fontWeight = 'normal';
-                checkbox.parentElement.style.color = '';
-            });
-            
-            // Restaurar título original
-            const titulo = document.querySelector('section.py-5 h1');
-            titulo.textContent = 'Catálogo de productos';
-            
-            // Remover parámetros de la URL sin recargar
-            const url = new URL(window.location);
-            url.searchParams.delete('categoria');
-            window.history.replaceState({}, '', url);
-            
-            console.log('Filtros limpiados');
-        }
-
-        // Función para actualizar URL cuando se cambian filtros
-        function actualizarURL() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="categoria-"]:checked');
-            const url = new URL(window.location);
-            
-            // Limpiar parámetros existentes
-            url.searchParams.delete('categoria');
-            
-            // Agregar categorías seleccionadas
-            if (checkboxes.length > 0) {
-                // Por simplicidad, solo tomamos la primera categoría seleccionada
-                const categoria = checkboxes[0].value;
-                url.searchParams.set('categoria', categoria);
-            }
-            
-            // Actualizar URL sin recargar
-            window.history.replaceState({}, '', url);
-        }
-
-        // Event listener para cuando se carga la página
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aplicar filtros basados en URL
-            aplicarFiltroURL();
-            
-            // Agregar event listeners a los checkboxes
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="categoria-"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    // Solo permitir una categoría seleccionada a la vez para mantener URL limpia
-                    if (this.checked) {
-                        checkboxes.forEach(cb => {
-                            if (cb !== this) {
-                                cb.checked = false;
-                                cb.parentElement.style.fontWeight = 'normal';
-                                cb.parentElement.style.color = '';
-                            }
-                        });
-                        
-                        // Estilizar la categoría seleccionada
-                        this.parentElement.style.fontWeight = 'bold';
-                        this.parentElement.style.color = '#008c5a';
-                        
-                        // Actualizar título
-                        const titulo = document.querySelector('section.py-5 h1');
-                        const categoriaCapitalizada = this.value.charAt(0).toUpperCase() + this.value.slice(1);
-                        titulo.textContent = `Catálogo - ${categoriaCapitalizada}`;
-                    } else {
-                        // Si se desmarca, restaurar estado normal
-                        this.parentElement.style.fontWeight = 'normal';
-                        this.parentElement.style.color = '';
-                        
-                        const titulo = document.querySelector('section.py-5 h1');
-                        titulo.textContent = 'Catálogo de productos';
-                    }
-                    
-                    actualizarURL();
-                });
-            });
-            
-            // Event listener para botón "Limpiar filtros"
-            const btnLimpiar = document.querySelector('.btn-outline-secondary');
-            if (btnLimpiar) {
-                btnLimpiar.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    limpiarFiltros();
-                });
-            }
-            
-            // Event listener para botón "Aplicar filtros" (futuro desarrollo)
-            const btnAplicar = document.querySelector('.btn-success');
-            if (btnAplicar && btnAplicar.textContent.includes('Aplicar')) {
-                btnAplicar.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('Aplicar filtros - función disponible para futuro desarrollo');
-                    // Aquí se puede agregar lógica para filtrar productos visualmente
-                });
-            }
-        });
-    </script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/catalog.js"></script>
     </body>

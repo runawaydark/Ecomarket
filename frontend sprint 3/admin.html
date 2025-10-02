@@ -127,9 +127,14 @@
                         <h1><i class="bi bi-gear-fill"></i> Panel de Administración</h1>
                         <p class="mb-0">Gestiona los productos del catálogo EcoMarket</p>
                     </div>
-                    <a href="catalogo.html" class="btn btn-light">
-                        <i class="bi bi-eye"></i> Ver Catálogo
-                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="catalogo.html" class="btn btn-light">
+                            <i class="bi bi-eye"></i> Ver Catálogo
+                        </a>
+                        <button class="btn btn-outline-light" onclick="logout()">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -192,7 +197,7 @@
                     
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Precio *</label>
+                            <label class="form-label">Precio oferta *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
                                 <input type="number" class="form-control" id="product-price" required>
@@ -574,12 +579,47 @@
             clearForm();
         });
         
+        // Función para cerrar sesión
+        function logout() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                localStorage.removeItem('ecomarket_logged_in');
+                localStorage.removeItem('ecomarket_user_type');
+                localStorage.removeItem('ecomarket_user_email');
+                localStorage.removeItem('ecomarket_user_name');
+                
+                alert('Sesión cerrada correctamente');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Verificar autenticación
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('ecomarket_logged_in') === 'true';
+            const userType = localStorage.getItem('ecomarket_user_type');
+            
+            if (!isLoggedIn || userType !== 'admin') {
+                alert('Acceso denegado. Debes iniciar sesión como administrador.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
+            // Verificar autenticación antes de cargar el panel
+            if (!checkAuth()) {
+                return;
+            }
+            
             renderProductsList();
             updateStats();
             
-            console.log('Panel de administración inicializado');
+            // Mostrar información del usuario logueado
+            const userEmail = localStorage.getItem('ecomarket_user_email');
+            if (userEmail) {
+                console.log('Panel de administración inicializado para:', userEmail);
+            }
         });
     </script>
 </body>

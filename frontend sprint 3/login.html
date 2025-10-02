@@ -140,9 +140,9 @@
                     <label for="email" class="form-label">Correo electrónico</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control" id="email" placeholder="correo@ejemplo.com" required>
+                        <input type="text" class="form-control" id="email" placeholder="correo@ejemplo.com o admin" required>
                     </div>
-                    <div class="invalid-feedback">Ingresa un correo válido.</div>
+                    <div class="invalid-feedback">Ingresa un correo válido o "admin" para acceso administrativo.</div>
                 </div>
 
                 <!-- CAMPO CONTRASEÑA -->
@@ -168,6 +168,14 @@
                     <div class="mb-2">
                         <a href="#" class="text-muted text-decoration-none" id="forgotPassword" style="display: block;">¿Olvidaste tu contraseña?</a>
                     </div>
+                    
+                    <!-- INFO DE ADMIN -->
+                    <div class="alert alert-info small mb-3" id="adminInfo">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Acceso de Administrador:</strong><br>
+                        Email: <code>admin</code> | Contraseña: <code>1234</code>
+                    </div>
+                    
                     <a href="index.html" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-arrow-left"></i> Volver al inicio
                     </a>
@@ -263,8 +271,57 @@
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('toggleIcon');
             const authForm = document.getElementById('authForm');
+            const adminInfo = document.getElementById('adminInfo');
+            const emailInput = document.getElementById('email');
 
             let isLoginMode = true;
+
+            // === VALIDACIÓN DINÁMICA DEL EMAIL ===
+            emailInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                const lowerValue = value.toLowerCase();
+                
+                // Si está escribiendo "admin", cambiar el placeholder y remover validación de email
+                if (lowerValue === 'admin') {
+                    this.placeholder = 'admin (acceso administrativo)';
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                    this.setCustomValidity(''); // Limpiar validación personalizada
+                } else if (lowerValue.startsWith('adm') && lowerValue.length < 5) {
+                    this.placeholder = 'admin (acceso administrativo)';
+                    this.classList.remove('is-invalid', 'is-valid');
+                } else if (value.includes('@')) {
+                    this.placeholder = 'correo@ejemplo.com';
+                    // Validar formato de email
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (emailRegex.test(value)) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    } else {
+                        this.classList.remove('is-valid');
+                        this.classList.add('is-invalid');
+                    }
+                } else if (value.length > 0) {
+                    this.placeholder = 'correo@ejemplo.com o admin';
+                    this.classList.remove('is-valid', 'is-invalid');
+                } else {
+                    this.placeholder = 'correo@ejemplo.com o admin';
+                    this.classList.remove('is-valid', 'is-invalid');
+                }
+            });
+
+            // === VALIDACIÓN ESPECÍFICA PARA MODO REGISTRO ===
+            function updateEmailValidationForMode() {
+                if (!isLoginMode && emailInput.value.toLowerCase() === 'admin') {
+                    emailInput.classList.remove('is-valid');
+                    emailInput.classList.add('is-invalid');
+                    emailInput.placeholder = 'No puedes usar "admin" para registro';
+                } else if (!isLoginMode) {
+                    emailInput.placeholder = 'correo@ejemplo.com';
+                } else {
+                    emailInput.placeholder = 'correo@ejemplo.com o admin';
+                }
+            }
 
             // === FUNCIÓN PARA CAMBIAR ENTRE LOGIN Y REGISTRO ===
             function switchMode(isLogin) {
@@ -278,6 +335,7 @@
                     nameInput.removeAttribute('required');
                     submitBtn.textContent = 'Iniciar Sesión';
                     forgotPassword.style.display = 'block';
+                    adminInfo.style.display = 'block';
                     document.title = 'Iniciar Sesión - EcoMarket';
                 } else {
                     // Modo Registro
@@ -287,8 +345,12 @@
                     nameInput.setAttribute('required', 'required');
                     submitBtn.textContent = 'Crear Cuenta';
                     forgotPassword.style.display = 'none';
+                    adminInfo.style.display = 'none';
                     document.title = 'Registrarse - EcoMarket';
                 }
+                
+                // Actualizar validación del email según el modo
+                updateEmailValidationForMode();
             }
 
             // === EVENTOS DE LOS TABS ===
@@ -310,27 +372,101 @@
                 }
             });
 
+            // === FUNCIÓN PARA VALIDAR EMAIL ===
+            function isValidEmailOrAdmin(email) {
+                // Si es "admin", es válido
+                if (email.toLowerCase() === 'admin') {
+                    return true;
+                }
+                // Si no es admin, debe ser un email válido
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
             // === MANEJO DEL FORMULARIO ===
             authForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
                 // Obtener datos del formulario
-                const email = document.getElementById('email').value;
+                const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value;
-                const name = document.getElementById('name').value;
+                const name = document.getElementById('name').value.trim();
+
+                // Validar campos básicos
+                if (!email || !password) {
+                    alert('Por favor completa todos los campos obligatorios.');
+                    return;
+                }
 
                 if (isLoginMode) {
-                    // Lógica de login
-                    console.log('Iniciando sesión:', { email, password });
-                    alert(`Iniciando sesión para: ${email}`);
+                    // Verificar si es login de admin
+                    if (email.toLowerCase() === 'admin' && password === '1234') {
+                        // Login de administrador exitoso
+                        localStorage.setItem('ecomarket_user_type', 'admin');
+                        localStorage.setItem('ecomarket_user_email', 'admin');
+                        localStorage.setItem('ecomarket_logged_in', 'true');
+                        
+                        alert('¡Bienvenido Administrador! Redirigiendo al panel de control...');
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1000);
+                        return;
+                    } else if (email.toLowerCase() === 'admin' && password !== '1234') {
+                        // Admin con contraseña incorrecta
+                        alert('Contraseña de administrador incorrecta. La contraseña correcta es "1234".');
+                        return;
+                    } else {
+                        // Login de usuario normal - validar formato de email
+                        if (!isValidEmailOrAdmin(email)) {
+                            alert('Por favor ingresa un correo electrónico válido o usa "admin" para acceso administrativo.');
+                            return;
+                        }
+                        
+                        if (password.length >= 4) {
+                            localStorage.setItem('ecomarket_user_type', 'user');
+                            localStorage.setItem('ecomarket_user_email', email);
+                            localStorage.setItem('ecomarket_logged_in', 'true');
+                            
+                            alert(`¡Bienvenido ${email}! Iniciando sesión...`);
+                            setTimeout(() => {
+                                window.location.href = 'index.html';
+                            }, 1000);
+                            return;
+                        } else {
+                            alert('La contraseña debe tener al menos 4 caracteres.');
+                            return;
+                        }
+                    }
                 } else {
-                    // Lógica de registro
-                    console.log('Registrando usuario:', { name, email, password });
-                    alert(`Registrando usuario: ${name} (${email})`);
+                    // Lógica de registro - NO permitir "admin" como registro
+                    if (email.toLowerCase() === 'admin') {
+                        alert('No puedes registrarte con el nombre "admin". Este está reservado para administradores.');
+                        return;
+                    }
+                    
+                    // Validar formato de email para registro
+                    if (!isValidEmailOrAdmin(email)) {
+                        alert('Por favor ingresa un correo electrónico válido para el registro.');
+                        return;
+                    }
+                    
+                    if (name && email && password.length >= 4) {
+                        // Simular registro exitoso
+                        localStorage.setItem('ecomarket_user_type', 'user');
+                        localStorage.setItem('ecomarket_user_email', email);
+                        localStorage.setItem('ecomarket_user_name', name);
+                        localStorage.setItem('ecomarket_logged_in', 'true');
+                        
+                        alert(`¡Cuenta creada exitosamente para ${name}! Iniciando sesión...`);
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                        return;
+                    } else {
+                        alert('Por favor completa todos los campos. La contraseña debe tener al menos 4 caracteres.');
+                        return;
+                    }
                 }
-                
-                // Aquí puedes agregar la lógica real de autenticación
-                // Por ejemplo, enviar datos al servidor
             });
 
             // === MODAL DE RECUPERAR CONTRASEÑA ===

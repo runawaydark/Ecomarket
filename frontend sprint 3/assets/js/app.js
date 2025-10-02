@@ -19,16 +19,141 @@ document.querySelectorAll(".btn-add-to-cart").forEach(button => {
     });
 });
 
-// Simulación de inicio/cierre de sesión
-let loggedIn = false; // Cambia a true si el usuario inició sesión
+// Sistema de autenticación
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('ecomarket_logged_in') === 'true';
+    const userType = localStorage.getItem('ecomarket_user_type');
+    const userEmail = localStorage.getItem('ecomarket_user_email');
+    
+    return {
+        isLoggedIn,
+        userType,
+        userEmail,
+        isAdmin: userType === 'admin'
+    };
+}
+
+// Función para cerrar sesión
+function logout() {
+    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+        localStorage.removeItem('ecomarket_logged_in');
+        localStorage.removeItem('ecomarket_user_type');
+        localStorage.removeItem('ecomarket_user_email');
+        localStorage.removeItem('ecomarket_user_name');
+        
+        alert('Sesión cerrada correctamente');
+        window.location.href = 'index.html';
+    }
+}
+
+// Actualizar navbar según estado de autenticación
+function updateNavbar() {
+    const auth = checkAuthStatus();
+    const navbar = document.querySelector('.navbar-nav');
+    
+    // Para páginas con navbar tradicional (como catálogo)
+    if (navbar) {
+        // Buscar si ya existe el enlace de admin
+        let adminLink = navbar.querySelector('.admin-nav-item');
+        let loginLink = document.querySelector('a[href="login.html"]');
+        
+        if (auth.isLoggedIn && auth.isAdmin) {
+            // Usuario admin logueado - mostrar enlace de admin
+            if (!adminLink) {
+                const adminItem = document.createElement('li');
+                adminItem.className = 'nav-item admin-nav-item';
+                adminItem.innerHTML = `
+                    <a class="nav-link" href="admin.html">
+                        <i class="bi bi-gear-fill"></i> Admin
+                    </a>
+                `;
+                navbar.appendChild(adminItem);
+            }
+            
+            // Cambiar enlace de login por logout
+            if (loginLink) {
+                loginLink.innerHTML = '<i class="bi bi-box-arrow-right"></i>';
+                loginLink.href = '#';
+                loginLink.title = 'Cerrar sesión';
+                loginLink.onclick = (e) => {
+                    e.preventDefault();
+                    logout();
+                };
+            }
+        } else if (auth.isLoggedIn) {
+            // Usuario normal logueado - solo mostrar logout
+            if (adminLink) {
+                adminLink.remove();
+            }
+            
+            if (loginLink) {
+                loginLink.innerHTML = '<i class="bi bi-box-arrow-right"></i>';
+                loginLink.href = '#';
+                loginLink.title = 'Cerrar sesión';
+                loginLink.onclick = (e) => {
+                    e.preventDefault();
+                    logout();
+                };
+            }
+        } else {
+            // Usuario no logueado - remover admin link y mostrar login normal
+            if (adminLink) {
+                adminLink.remove();
+            }
+            
+            if (loginLink) {
+                loginLink.innerHTML = '<i class="bi bi-person fs-5"></i>';
+                loginLink.href = 'login.html';
+                loginLink.title = 'Iniciar sesión';
+                loginLink.onclick = null;
+            }
+        }
+    }
+    
+    // Para páginas con dropdown (como index)
+    updateUserDropdown();
+}
+
+// Actualizar dropdown del usuario
+function updateUserDropdown() {
+    const auth = checkAuthStatus();
+    const dropdownMenu = document.getElementById('userDropdownMenu');
+    
+    if (!dropdownMenu) return;
+    
+    if (auth.isLoggedIn) {
+        const userName = localStorage.getItem('ecomarket_user_name') || auth.userEmail;
+        const displayName = auth.isAdmin ? 'Administrador' : userName;
+        
+        dropdownMenu.innerHTML = `
+            <li><span class="dropdown-item-text"><strong>${displayName}</strong></span></li>
+            <li><hr class="dropdown-divider"></li>
+            ${auth.isAdmin ? '<li><a class="dropdown-item" href="admin.html"><i class="bi bi-gear-fill me-2"></i>Panel Admin</a></li>' : ''}
+            <li><a class="dropdown-item" href="pedidos.html"><i class="bi bi-bag me-2"></i>Mis pedidos</a></li>
+            <li><a class="dropdown-item" href="carrito.html"><i class="bi bi-cart me-2"></i>Ver carrito</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+        `;
+    } else {
+        dropdownMenu.innerHTML = `
+            <li><a class="dropdown-item" href="login.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+            <li><a class="dropdown-item" href="login.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="carrito.html"><i class="bi bi-cart me-2"></i>Ver carrito</a></li>
+        `;
+    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    const cerrarSesionItem = document.getElementById("logout-item");
-
-    if (!loggedIn && cerrarSesionItem) {
-    cerrarSesionItem.style.display = "none"; // Ocultar "Cerrar sesión"
-    } else if (loggedIn && cerrarSesionItem) {
-    cerrarSesionItem.style.display = "block"; // Mostrar si está logueado
+    updateNavbar();
+    
+    // Verificar si estamos en una página que requiere autenticación
+    const currentPage = window.location.pathname.split('/').pop();
+    const auth = checkAuthStatus();
+    
+    if (currentPage === 'admin.html' && (!auth.isLoggedIn || !auth.isAdmin)) {
+        alert('Acceso denegado. Debes iniciar sesión como administrador.');
+        window.location.href = 'login.html';
     }
 });
 
