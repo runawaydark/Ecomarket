@@ -1,5 +1,48 @@
 // ===== SISTEMA DE PRODUCTOS PARA CATÁLOGO =====
 
+// Función para mostrar notificaciones no invasivas
+function showToast(message, type = 'success', duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    
+    const iconClass = {
+        'success': 'bi-check-circle-fill text-success',
+        'error': 'bi-x-circle-fill text-danger',
+        'warning': 'bi-exclamation-triangle-fill text-warning',
+        'info': 'bi-info-circle-fill text-info'
+    }[type];
+    
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="bi ${iconClass} me-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    toast.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 1050;
+        animation: slideInRight 0.3s ease;
+        border-left: 4px solid ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 300);
+    }, duration);
+}
+
 // Productos por defecto
 const defaultProducts = [
     {
@@ -172,15 +215,17 @@ function addToCart(productId) {
 
     // Verificar stock disponible
     if (quantity > product.stock) {
-        alert(`Solo hay ${product.stock} unidades disponibles`);
+        showToast(`Solo hay ${product.stock} unidades disponibles de ${product.name}`, 'warning');
+        // Resetear el input de cantidad
+        qtyInput.value = Math.min(quantity, product.stock);
         return;
     }
 
     // Obtener carrito actual
     let cart = JSON.parse(localStorage.getItem('ecomarket_cart')) || [];
     
-    // Buscar si el producto ya está en el carrito
-    const existingItem = cart.find(item => item.id === productId);
+    // Buscar si el producto ya está en el carrito - usar productId para compatibilidad
+    const existingItem = cart.find(item => item.productId === productId);
     
     if (existingItem) {
         // Si ya existe, actualizar cantidad
@@ -188,25 +233,26 @@ function addToCart(productId) {
         if (newQuantity <= product.stock) {
             existingItem.quantity = newQuantity;
         } else {
-            alert(`Solo puedes agregar ${product.stock - existingItem.quantity} unidades más`);
+            showToast(`Solo puedes agregar ${product.stock - existingItem.quantity} unidades más de ${product.name}`, 'warning');
+            // Resetear el input de cantidad
+            qtyInput.value = product.stock - existingItem.quantity;
             return;
         }
     } else {
-        // Si no existe, agregar nuevo item
+        // Si no existe, agregar nuevo item - usar estructura compatible con carrito.html
         cart.push({
-            id: productId,
-            name: product.name,
-            price: product.price,
-            unit: product.unit,
-            image: product.image,
+            productId: productId,
             quantity: quantity,
-            maxStock: product.stock
+            addedAt: new Date().toISOString()
         });
     }
 
     // Guardar carrito y actualizar contador
     localStorage.setItem('ecomarket_cart', JSON.stringify(cart));
     updateCartCount();
+    
+    // Disparar evento para sincronizar con otras páginas
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
     
     // Feedback visual
     const addButton = productCard.querySelector('.btn-add-cart');
@@ -229,6 +275,7 @@ function updateCartCount() {
     const cartBadge = document.getElementById('cart-count');
     if (cartBadge) {
         cartBadge.textContent = totalItems;
+        cartBadge.style.display = totalItems > 0 ? 'inline-block' : 'none';
         
         // Animación del badge
         cartBadge.style.transform = 'scale(1.3)';
@@ -289,7 +336,9 @@ function jumpToPage() {
         // Scroll al inicio de los productos
         document.getElementById('productos-lista').scrollIntoView({ behavior: 'smooth' });
     } else {
-        alert(`Por favor ingresa un número entre 1 y ${totalPages}`);
+        showToast(`Por favor ingresa un número entre 1 y ${totalPages}`, 'warning');
+        // Limpiar el input inválido
+        document.getElementById('page-input').value = '';
     }
 }
 
@@ -815,3 +864,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Sistema de catálogo inicializado');
 });
+
+// Agregar estilos CSS para las animaciones de toast
+const toastStyles = document.createElement('style');
+toastStyles.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(toastStyles);

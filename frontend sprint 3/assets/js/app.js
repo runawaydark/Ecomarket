@@ -1,22 +1,23 @@
-let cartCount = 0;
-const cartBadge = document.getElementById("cart-count");
-
-// Función para actualizar el contador
-function updateCart() {
-    cartBadge.textContent = cartCount;
+// ===== SISTEMA DE CARRITO GLOBAL =====
+// Función para actualizar el contador del carrito en todas las páginas
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('ecomarket_cart')) || [];
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const cartBadge = document.getElementById('cart-count');
+    if (cartBadge) {
+        cartBadge.textContent = totalItems;
+        cartBadge.style.display = totalItems > 0 ? 'inline-block' : 'none';
+    }
 }
 
-// Simulación: prueba agregando un producto
-function addToCart() {
-    cartCount++;
-    updateCart();
-}
+// Escuchar eventos de actualización del carrito
+window.addEventListener('cartUpdated', function(event) {
+    updateCartCount();
+});
 
-// Ejemplo: para testear con clics en botones de "Agregar"
-document.querySelectorAll(".btn-add-to-cart").forEach(button => {
-    button.addEventListener("click", () => {
-        addToCart();
-    });
+// Inicializar contador al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
 });
 
 // Sistema de autenticación
