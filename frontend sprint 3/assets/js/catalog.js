@@ -80,7 +80,7 @@ const defaultProducts = [
         unit: 'kg',
         stock: 30,
         maxStock: 40,
-        image: 'https://via.placeholder.com/300x220/FF6B6B/FFFFFF?text=Manzanas',
+        image: 'assets/img/manzanas.png',
         rating: 4.3,
         reviews: 28,
         isNew: false,
@@ -97,7 +97,7 @@ const defaultProducts = [
         unit: 'kg',
         stock: 18,
         maxStock: 25,
-        image: 'https://via.placeholder.com/300x220/FFE66D/333333?text=Bananas',
+        image: 'assets/img/bananas.png',
         rating: 4.6,
         reviews: 45,
         isNew: false,
@@ -340,26 +340,42 @@ function getFilteredProducts() {
 function renderProducts() {
     const container = document.getElementById('productos-lista');
     const filteredProducts = getFilteredProducts();
+    
+    // Si no hay productos filtrados, mostrar mensaje
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-info text-center py-5">
+                    <div class="mb-3">
+                        <i class="bi bi-search" style="font-size: 3rem; color: #6c757d;"></i>
+                    </div>
+                    <h4>No se encontraron productos</h4>
+                    <p class="mb-3">No hay productos que coincidan con los filtros seleccionados.</p>
+                    <button class="btn btn-outline-success" onclick="clearFilters()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Limpiar filtros
+                    </button>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const productsToShow = filteredProducts.slice(startIndex, endIndex);
     
-    // Limpiar productos existentes (excepto los primeros 4 estáticos)
-    const staticProducts = container.querySelectorAll('.col-md-4');
-    staticProducts.forEach((product, index) => {
-        if (index >= 4) { // Mantener los primeros 4 productos estáticos
-            product.remove();
-        }
-    });
+    // Limpiar todos los productos y renderizar solo los filtrados
+    container.innerHTML = '';
     
-    // Agregar productos dinámicos
-    productsToShow.slice(4).forEach(product => { // Empezar desde el 5to producto
+    // Agregar productos filtrados
+    productsToShow.forEach(product => {
         const productHTML = createProductCard(product);
         container.insertAdjacentHTML('beforeend', productHTML);
     });
     
     // Actualizar información de resultados
-    updateResultsInfo(filteredProducts.length, startIndex + 1, Math.min(endIndex, filteredProducts.length));
+    const actualEndIndex = Math.min(endIndex, filteredProducts.length);
+    updateResultsInfo(filteredProducts.length, startIndex + 1, actualEndIndex);
 }
 
 // Crear HTML para una tarjeta de producto
@@ -368,68 +384,124 @@ function createProductCard(product) {
     const stockClass = product.stock > 5 ? 'in-stock' : product.stock > 0 ? 'low-stock' : 'out-stock';
     const stockText = product.stock > 5 ? 'En Stock' : product.stock > 0 ? 'Poco Stock' : 'Sin Stock';
     
-    const stars = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 ? '☆' : '');
+    const colClass = currentView === 'list' ? 'col-12' : 'col-md-4';
+    const cardClass = currentView === 'list' ? 'product-card-list' : 'product-card';
     
-    return `
-        <div class="col-md-4">
-            <div class="product-card">
-                <div class="product-image-container">
-                    <img src="${product.image}" class="product-image" alt="${product.name}">
-                    <div class="product-badges">
-                        ${product.isOffer ? '<span class="badge-offer">-' + Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) + '%</span>' : ''}
-                        ${product.isNew ? '<span class="badge-new">Nuevo</span>' : ''}
-                        <span class="badge-stock ${stockClass}">${stockText}</span>
-                    </div>
-                    <div class="product-overlay">
-                        <button class="btn-quick-view" title="Vista rápida">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                        <button class="btn-favorite" title="Agregar a favoritos">
-                            <i class="bi bi-heart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div>
-                    <h5 class="product-title">${product.name}</h5>
-                    <p class="product-description">${product.description}</p>
-                    <div class="product-rating">
-                        <div class="stars">
-                            ${'<i class="bi bi-star-fill"></i>'.repeat(Math.floor(product.rating))}
-                            ${product.rating % 1 ? '<i class="bi bi-star-half"></i>' : ''}
-                            ${'<i class="bi bi-star"></i>'.repeat(5 - Math.ceil(product.rating))}
-                        </div>
-                        <span class="rating-text">(${product.rating}) ${product.reviews} reseñas</span>
-                    </div>
-                    <div class="product-stock">
-                        <div class="stock-info">
-                            <span class="stock-text">Stock disponible: </span>
-                            <span class="stock-quantity">${product.stock} unidades</span>
-                        </div>
-                        <div class="stock-bar">
-                            <div class="stock-fill ${product.stock <= 5 ? 'low' : ''}" style="width: ${stockPercentage}%"></div>
+    if (currentView === 'list') {
+        // Vista de lista horizontal
+        return `
+            <div class="${colClass}">
+                <div class="${cardClass} d-flex">
+                    <div class="product-image-container-list">
+                        <img src="${product.image}" class="product-image-list" alt="${product.name}">
+                        <div class="product-badges">
+                            ${product.isOffer ? '<span class="badge-offer">-' + Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) + '%</span>' : ''}
+                            ${product.isNew ? '<span class="badge-new">Nuevo</span>' : ''}
+                            <span class="badge-stock ${stockClass}">${stockText}</span>
                         </div>
                     </div>
-                    <div class="product-price">
-                        ${product.originalPrice ? `<span class="price-old">$${product.originalPrice.toLocaleString()}</span>` : ''}
-                        <span class="price-current">$${product.price.toLocaleString()}</span>
-                        <span class="price-unit">por ${product.unit}</span>
-                    </div>
-                    <div class="product-actions">
-                        <div class="quantity-selector">
-                            <button class="qty-btn minus">-</button>
-                            <input type="number" class="qty-input" value="1" min="1" max="${product.stock}">
-                            <button class="qty-btn plus">+</button>
+                    <div class="product-info-list flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div>
+                                <h5 class="product-title mb-2">${product.name}</h5>
+                                <p class="product-description mb-2">${product.description}</p>
+                                <div class="product-rating mb-2">
+                                    <div class="stars">
+                                        ${'<i class="bi bi-star-fill"></i>'.repeat(Math.floor(product.rating))}
+                                        ${product.rating % 1 ? '<i class="bi bi-star-half"></i>' : ''}
+                                        ${'<i class="bi bi-star"></i>'.repeat(5 - Math.ceil(product.rating))}
+                                    </div>
+                                    <span class="rating-text">(${product.rating}) ${product.reviews} reseñas</span>
+                                </div>
+                                <div class="product-stock-inline">
+                                    <span class="stock-text">Stock: </span>
+                                    <span class="stock-quantity">${product.stock} unidades</span>
+                                </div>
+                            </div>
+                            <div class="product-actions-list">
+                                <div class="product-price mb-2">
+                                    ${product.originalPrice ? `<span class="price-old">$${product.originalPrice.toLocaleString()}</span>` : ''}
+                                    <span class="price-current">$${product.price.toLocaleString()}</span>
+                                    <span class="price-unit">por ${product.unit}</span>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="quantity-selector-small">
+                                        <button class="qty-btn minus">-</button>
+                                        <input type="number" class="qty-input" value="1" min="1" max="${product.stock}">
+                                        <button class="qty-btn plus">+</button>
+                                    </div>
+                                    <button class="btn-add-cart-small" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}>
+                                        <i class="bi bi-cart-plus"></i>
+                                        <span>${product.stock === 0 ? 'Sin Stock' : 'Agregar'}</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn-add-cart" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}>
-                            <i class="bi bi-cart-plus"></i>
-                            <span>${product.stock === 0 ? 'Sin Stock' : 'Agregar'}</span>
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        // Vista de cuadrícula (original)
+        return `
+            <div class="${colClass}">
+                <div class="${cardClass}">
+                    <div class="product-image-container">
+                        <img src="${product.image}" class="product-image" alt="${product.name}">
+                        <div class="product-badges">
+                            ${product.isOffer ? '<span class="badge-offer">-' + Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) + '%</span>' : ''}
+                            ${product.isNew ? '<span class="badge-new">Nuevo</span>' : ''}
+                            <span class="badge-stock ${stockClass}">${stockText}</span>
+                        </div>
+                        <div class="product-overlay">
+                            <button class="btn-quick-view" title="Vista rápida">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div>
+                        <h5 class="product-title">${product.name}</h5>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-rating">
+                            <div class="stars">
+                                ${'<i class="bi bi-star-fill"></i>'.repeat(Math.floor(product.rating))}
+                                ${product.rating % 1 ? '<i class="bi bi-star-half"></i>' : ''}
+                                ${'<i class="bi bi-star"></i>'.repeat(5 - Math.ceil(product.rating))}
+                            </div>
+                            <span class="rating-text">(${product.rating}) ${product.reviews} reseñas</span>
+                        </div>
+                        <div class="product-stock">
+                            <div class="stock-info">
+                                <span class="stock-text">Stock disponible: </span>
+                                <span class="stock-quantity">${product.stock} unidades</span>
+                            </div>
+                            <div class="stock-bar">
+                                <div class="stock-fill ${product.stock <= 5 ? 'low' : ''}" style="width: ${stockPercentage}%"></div>
+                            </div>
+                        </div>
+                        <div class="product-price">
+                            ${product.originalPrice ? `<span class="price-old">$${product.originalPrice.toLocaleString()}</span>` : ''}
+                            <span class="price-current">$${product.price.toLocaleString()}</span>
+                            <span class="price-unit">por ${product.unit}</span>
+                        </div>
+                        <div class="product-actions">
+                            <div class="quantity-selector">
+                                <button class="qty-btn minus">-</button>
+                                <input type="number" class="qty-input" value="1" min="1" max="${product.stock}">
+                                <button class="qty-btn plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}>
+                                <i class="bi bi-cart-plus"></i>
+                                <span>${product.stock === 0 ? 'Sin Stock' : 'Agregar'}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 }
 
 // Actualizar información de resultados
@@ -446,6 +518,30 @@ function updateResultsInfo(totalProducts, startItem, endItem) {
     const paginationInfo = document.querySelector('.pagination-info span');
     if (paginationInfo) {
         paginationInfo.innerHTML = `Mostrando <strong>${startItem}-${endItem}</strong> de <strong>${totalProducts}</strong> productos`;
+    }
+}
+
+// Actualizar contador de productos encontrados
+function updateProductsFoundCount() {
+    const filteredProducts = getFilteredProducts();
+    const totalProducts = filteredProducts.length;
+    
+    // Actualizar el título de "Productos encontrados"
+    const productsFoundElement = document.querySelector('.col-9 h2');
+    if (productsFoundElement) {
+        productsFoundElement.textContent = 'Productos encontrados';
+    }
+    
+    // Actualizar el subtítulo con la cantidad
+    const productsSubtitle = document.querySelector('.col-9 p');
+    if (productsSubtitle) {
+        if (totalProducts === 0) {
+            productsSubtitle.textContent = 'No se encontraron productos que coincidan con los filtros seleccionados';
+        } else {
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, totalProducts);
+            productsSubtitle.textContent = `Mostrando ${startItem}-${endItem} de ${totalProducts} productos`;
+        }
     }
 }
 
@@ -555,7 +651,11 @@ function applyFilters() {
     renderProducts();
     updatePagination();
     
+    // Actualizar contador de productos encontrados
+    updateProductsFoundCount();
+    
     console.log('Filtros aplicados:', currentFilters);
+    console.log('Productos filtrados:', getFilteredProducts().length);
 }
 
 function clearFilters() {
@@ -631,6 +731,33 @@ window.addEventListener('productsUpdated', function(event) {
     updatePagination();
 });
 
+// Variable para el tipo de vista actual
+let currentView = 'grid';
+
+// Función para cambiar vista
+function changeView(viewType) {
+    currentView = viewType;
+    
+    // Actualizar botones
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-view') === viewType) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Actualizar contenedor de productos
+    const container = document.getElementById('productos-lista');
+    if (viewType === 'list') {
+        container.classList.add('list-view');
+    } else {
+        container.classList.remove('list-view');
+    }
+    
+    // Re-renderizar productos con la nueva vista
+    renderProducts();
+}
+
 // Inicialización cuando se carga la página
 document.addEventListener('DOMContentLoaded', function() {
     initializeProducts();
@@ -645,9 +772,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.getElementById('sort-options').addEventListener('change', applyFilters);
     
+    // Configurar botones de vista
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.getAttribute('data-view');
+            changeView(view);
+        });
+    });
+    
     // Renderizar productos iniciales
     renderProducts();
     updatePagination();
+    updateProductsFoundCount();
     
     console.log('Sistema de catálogo inicializado');
 });
