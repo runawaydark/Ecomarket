@@ -103,6 +103,23 @@ const defaultProducts = [
         isNew: false,
         isOffer: true,
         available: true
+    },
+    {
+        id: 'apio',
+        name: 'Apio Fresco Orgánico',
+        category: 'verduras',
+        description: 'Apio fresco y crujiente, perfecto para jugos y ensaladas. Temporalmente agotado.',
+        price: 1400,
+        originalPrice: null,
+        unit: 'kg',
+        stock: 0,
+        maxStock: 15,
+        image: 'https://via.placeholder.com/300x220/90EE90/333333?text=Apio',
+        rating: 4.1,
+        reviews: 8,
+        isNew: false,
+        isOffer: false,
+        available: false
     }
 ];
 
@@ -282,9 +299,20 @@ function getFilteredProducts() {
     
     // Filtrar por categorías
     if (currentFilters.categories.length > 0) {
-        products = products.filter(product => 
-            currentFilters.categories.includes(product.category)
-        );
+        products = products.filter(product => {
+            // Manejo especial para ofertas
+            if (currentFilters.categories.includes('ofertas')) {
+                // Si solo se selecciona ofertas, mostrar productos en oferta
+                if (currentFilters.categories.length === 1) {
+                    return product.isOffer;
+                }
+                // Si se selecciona ofertas + otras categorías, mostrar productos en oferta de esas categorías
+                const otherCategories = currentFilters.categories.filter(cat => cat !== 'ofertas');
+                return product.isOffer && (otherCategories.length === 0 || otherCategories.includes(product.category));
+            }
+            // Filtro normal por categoría
+            return currentFilters.categories.includes(product.category);
+        });
     }
     
     // Filtrar por rango de precios
@@ -302,7 +330,7 @@ function getFilteredProducts() {
             if (currentFilters.availability.includes('poco-stock')) {
                 return product.stock <= 5 && product.stock > 0;
             }
-            if (currentFilters.availability.includes('proximamente')) {
+            if (currentFilters.availability.includes('sin-stock')) {
                 return product.stock === 0;
             }
             return true;

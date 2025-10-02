@@ -1435,9 +1435,9 @@
   box-shadow: 0 0 6px rgba(255, 193, 7, 0.4);
 }
 
-.availability-indicator.coming-soon {
-  background: #6c757d;
-  box-shadow: 0 0 6px rgba(108, 117, 125, 0.4);
+.availability-indicator.out-of-stock {
+  background: #dc3545;
+  box-shadow: 0 0 6px rgba(220, 53, 69, 0.4);
 }
 
 /* Ordenar */

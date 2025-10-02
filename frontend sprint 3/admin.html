@@ -9,7 +9,7 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <style>
         .admin-container {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
             min-height: 100vh;
             padding: 2rem 0;
         }
@@ -57,12 +57,24 @@
         }
         
         .admin-section {
-            background: white;
+            background: #ffffff;
             border-radius: 15px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f1f3f4;
+            position: relative;
+        }
+        
+        .admin-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #008c5a 0%, #00a862 100%);
+            border-radius: 15px 15px 0 0;
         }
         
         .section-header {
@@ -111,9 +123,105 @@
             margin-bottom: 1rem;
         }
         
+        .form-control {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
         .form-control:focus {
+            background-color: #ffffff;
             border-color: #008c5a;
-            box-shadow: 0 0 0 3px rgba(0, 140, 90, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 140, 90, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+        
+        .form-control:hover {
+            border-color: #ced4da;
+            background-color: #ffffff;
+        }
+        
+        .form-control::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+        
+        /* Estilos específicos para inputs de números */
+        input[type="number"].form-control {
+            background-image: linear-gradient(45deg, transparent 49%, #f8f9fa 49%, #f8f9fa 51%, transparent 51%);
+            background-size: 20px 20px;
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        
+        /* Estilos para select */
+        select.form-control {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+        
+        /* Estilos para textarea */
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Labels mejorados */
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Contenedor de campos mejorado */
+        .mb-3 {
+            position: relative;
+        }
+        
+        /* Estilos para checkboxes mejorados */
+        .form-check-input {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-top: 0.25rem;
+            border: 2px solid #dee2e6;
+            border-radius: 4px;
+            background-color: #ffffff;
+        }
+        
+        .form-check-input:checked {
+            background-color: #008c5a;
+            border-color: #008c5a;
+        }
+        
+        .form-check-input:focus {
+            border-color: #008c5a;
+            box-shadow: 0 0 0 3px rgba(0, 140, 90, 0.15);
+        }
+        
+        .form-check-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        /* Botones mejorados */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>

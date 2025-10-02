@@ -169,13 +169,6 @@
                         <a href="#" class="text-muted text-decoration-none" id="forgotPassword" style="display: block;">¿Olvidaste tu contraseña?</a>
                     </div>
                     
-                    <!-- INFO DE ADMIN -->
-                    <div class="alert alert-info small mb-3" id="adminInfo">
-                        <i class="bi bi-info-circle me-2"></i>
-                        <strong>Acceso de Administrador:</strong><br>
-                        Email: <code>admin</code> | Contraseña: <code>1234</code>
-                    </div>
-                    
                     <a href="index.html" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-arrow-left"></i> Volver al inicio
                     </a>
@@ -271,7 +264,6 @@
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('toggleIcon');
             const authForm = document.getElementById('authForm');
-            const adminInfo = document.getElementById('adminInfo');
             const emailInput = document.getElementById('email');
 
             let isLoginMode = true;
@@ -335,7 +327,6 @@
                     nameInput.removeAttribute('required');
                     submitBtn.textContent = 'Iniciar Sesión';
                     forgotPassword.style.display = 'block';
-                    adminInfo.style.display = 'block';
                     document.title = 'Iniciar Sesión - EcoMarket';
                 } else {
                     // Modo Registro
@@ -345,7 +336,6 @@
                     nameInput.setAttribute('required', 'required');
                     submitBtn.textContent = 'Crear Cuenta';
                     forgotPassword.style.display = 'none';
-                    adminInfo.style.display = 'none';
                     document.title = 'Registrarse - EcoMarket';
                 }
                 
