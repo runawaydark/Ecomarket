@@ -1,9 +1,31 @@
+/* ESTILOS GLOBALES */
+body {
+    padding-top: 76px; /* Espacio para la navbar fija (60px + 16px de margen) */
+    scroll-padding-top: 76px; /* Para navegación suave con anclas */
+}
+
+/* Scroll suave para toda la página */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Ajuste para sections con anchors */
+section[id], div[id] {
+    scroll-margin-top: 76px; /* Compensación para navbar fija */
+}
+
 /* NAVBAR */
 .navbar {
     padding: 0.8rem 2rem;
     font-size: 0.95rem;
     min-height: 60px; /* Altura mínima para evitar superposiciones */
-    position: relative; /* Necesario para el posicionamiento del menú colapsado */
+    position: fixed; /* Navbar siempre fija */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050; /* Z-index muy alto para que esté sobre todos los elementos */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Sombra más notable para separación visual */
+    backdrop-filter: blur(10px); /* Efecto de desenfoque para mejor legibilidad */
 }
 
 /* Mejor organización del contenedor del navbar */
@@ -56,44 +78,70 @@
 
 /* Ajustes específicos para móvil */
 @media (max-width: 768px) {
+    /* Ajuste del padding del body para móvil */
+    body {
+        padding-top: 70px; /* Menos espacio en móvil */
+    }
+    
     .navbar-brand {
         font-size: 1.4rem;
     }
     
     .navbar .d-flex a, 
     .navbar .dropdown > a {
-        font-size: 1.3rem;
-        margin: 0 0.2rem;
-        padding: 0.4rem;
+        font-size: 1.4rem; /* Iconos más grandes para mejor acceso en móvil */
+        margin: 0 0.3rem;
+        padding: 0.5rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Efecto hover para iconos en móvil */
+    .navbar .d-flex a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.1);
     }
     
     .badge {
-        font-size: 0.6rem;
-        padding: 2px 4px;
-        min-width: 16px;
-        height: 16px;
+        font-size: 0.65rem;
+        padding: 3px 5px;
+        min-width: 18px;
+        height: 18px;
+        font-weight: 600;
     }
 
     /* Botón hamburguesa en móvil */
     .custom-toggler {
-        padding: 6px 8px;
-        margin-right: 20px; /* Más separación en móvil */
+        padding: 8px 10px;
+        margin-right: 12px; /* Mejor separación en móvil */
     }
     
     .custom-toggler-icon {
-        width: 20px;
-        height: 16px;
+        width: 22px;
+        height: 18px;
         gap: 3px;
     }
     
     .custom-toggler-icon span {
-        height: 2.5px;
+        height: 3px; /* Líneas más gruesas para mejor visibilidad */
     }
 
     /* Contenedor de iconos en móvil */
     .navbar .d-flex {
-        margin-left: 15px;
-        gap: 0.5rem; /* Espacio entre iconos */
+        margin-left: 10px;
+        gap: 0.3rem; /* Espacio optimizado entre iconos */
+    }
+
+    /* Hacer el carrito más prominente en móvil */
+    .navbar .d-flex a[href="carrito.html"] {
+        background-color: rgba(255, 221, 87, 0.1);
+        border: 1px solid rgba(255, 221, 87, 0.3);
+        border-radius: 8px;
+    }
+    
+    .navbar .d-flex a[href="carrito.html"]:hover {
+        background-color: rgba(255, 221, 87, 0.2);
+        border-color: rgba(255, 221, 87, 0.5);
     }
 }
 
@@ -723,22 +771,25 @@
 
 /* Custom hamburger menu button */
 .custom-toggler {
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 8px 10px;
     order: 2;
-    border-radius: 4px;
-    background-color: transparent;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo ligeramente visible */
     transition: all 0.3s ease;
     margin-right: 15px; /* Separación del botón hamburguesa de los iconos */
 }
 
 .custom-toggler:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px); /* Efecto sutil de elevación */
 }
 
 .custom-toggler:focus {
     box-shadow: 0 0 0 0.2rem rgba(255, 221, 87, 0.3);
     outline: none;
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 .custom-toggler-icon {
@@ -755,22 +806,26 @@
     display: block;
     height: 3px;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #2c2c2c; /* Color más oscuro y visible */
     border-radius: 2px;
     transition: all 0.3s ease;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3); /* Contorno sutil para mejor visibilidad */
 }
 
 .custom-toggler:hover .custom-toggler-icon span {
     background-color: #ffdd57;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 /* Animación sutil del botón hamburguesa cuando el menú está abierto */
 .custom-toggler[aria-expanded="true"] .custom-toggler-icon span {
     background-color: #ffdd57;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 .custom-toggler[aria-expanded="true"]:hover .custom-toggler-icon span {
-    background-color: #ffffff;
+    background-color: #2c2c2c;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
 }
 
 /* Menú colapsado en móvil */
@@ -784,10 +839,11 @@
         margin-top: 0;
         padding: 1rem;
         border-radius: 0 0 8px 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 1040; /* Justo debajo de la navbar pero por encima de todo lo demás */
         width: 100%;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px); /* Efecto sutil de desenfoque */
     }
 
     /* Animación para el menú colapsado */

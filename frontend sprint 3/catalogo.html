@@ -11,30 +11,52 @@
     </head>
     <body>
 
-    <!-- NAVBAR (reutilizada del index) -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008c5a;">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #008c5a;">
         <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="index.html">EcoMarket</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link active" href="catalogo.html">Catálogo</a></li>
-            <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
-            <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-            </ul>
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold" href="index.html">EcoMarket</a>
 
-            <!-- Iconos -->
-            <div class="d-flex align-items-center gap-3">
-            <a href="login.html" class="text-white" title="Iniciar sesión"><i class="bi bi-person fs-5"></i></a>
-            <a href="carrito.html" class="text-white position-relative" title="Carrito de compras">
-                <i class="bi bi-cart fs-5"></i>
-                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-            </a>
+            <!-- Iconos fijos a la derecha (siempre visibles) -->
+            <div class="d-flex align-items-center gap-2 order-lg-3">
+                <!-- Dropdown Usuario -->
+                <div class="dropdown">
+                    <a href="#" class="text-white" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person fs-5"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" id="userDropdownMenu">
+                        <!-- El contenido se genera dinámicamente con JavaScript -->
+                    </ul>
+                </div>
+
+                <!-- Carrito -->
+                <a href="carrito.html" class="text-white position-relative">
+                    <i class="bi bi-cart fs-5"></i>
+                    <!-- Contador dinámico -->
+                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                    0
+                    </span>  
+                </a>
             </div>
-        </div>
+
+            <!-- Botón Hamburguesa (corregido) -->
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="custom-toggler-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+
+            <!-- Links del menú -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="catalogo.html">Catálogo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
