@@ -374,6 +374,34 @@
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
             }
+            
+            // === CREAR USUARIO DE PRUEBA AUTOMÁTICAMENTE ===
+            function createTestUser() {
+                const testUser = {
+                    id: 'test-user-001',
+                    name: 'Usuario Prueba',
+                    email: 'usuario@prueba.com',
+                    password: '1234',
+                    type: 'user'
+                };
+                
+                // Guardar en localStorage como usuario registrado
+                let registeredUsers = JSON.parse(localStorage.getItem('ecomarket_registered_users')) || [];
+                
+                // Verificar si ya existe
+                const existingUser = registeredUsers.find(user => user.email === testUser.email);
+                if (!existingUser) {
+                    registeredUsers.push(testUser);
+                    localStorage.setItem('ecomarket_registered_users', JSON.stringify(registeredUsers));
+                    console.log('Usuario de prueba creado:', testUser);
+                }
+            }
+            
+            // === FUNCIÓN PARA VALIDAR CREDENCIALES ===
+            function validateUserCredentials(email, password) {
+                const registeredUsers = JSON.parse(localStorage.getItem('ecomarket_registered_users')) || [];
+                return registeredUsers.find(user => user.email === email && user.password === password);
+            }
 
             // === MANEJO DEL FORMULARIO ===
             authForm.addEventListener('submit', (e) => {
@@ -386,7 +414,7 @@
 
                 // Validar campos básicos
                 if (!email || !password) {
-                    alert('Por favor completa todos los campos obligatorios.');
+                    showNotification('Por favor completa todos los campos obligatorios.', 'warning');
                     return;
                 }
 
@@ -398,64 +426,104 @@
                         localStorage.setItem('ecomarket_user_email', 'admin');
                         localStorage.setItem('ecomarket_logged_in', 'true');
                         
-                        alert('¡Bienvenido Administrador! Redirigiendo al panel de control...');
+                        showNotification('¡Bienvenido Usuario Prueba! Iniciando sesión...', 'success');
                         setTimeout(() => {
                             window.location.href = 'admin.html';
-                        }, 1000);
+                        }, 1500);
                         return;
                     } else if (email.toLowerCase() === 'admin' && password !== '1234') {
                         // Admin con contraseña incorrecta
-                        alert('Contraseña de administrador incorrecta. La contraseña correcta es "1234".');
+                        showNotification('Contraseña de administrador incorrecta. La contraseña correcta es "1234".', 'error');
                         return;
                     } else {
                         // Login de usuario normal - validar formato de email
                         if (!isValidEmailOrAdmin(email)) {
-                            alert('Por favor ingresa un correo electrónico válido o usa "admin" para acceso administrativo.');
+                            showNotification('Por favor ingresa un correo electrónico válido o usa "admin" para acceso administrativo.', 'warning');
                             return;
                         }
                         
-                        if (password.length >= 4) {
+                        // Validar credenciales con usuarios registrados
+                        const validUser = validateUserCredentials(email, password);
+                        if (validUser) {
+                            // Login exitoso
                             localStorage.setItem('ecomarket_user_type', 'user');
-                            localStorage.setItem('ecomarket_user_email', email);
+                            localStorage.setItem('ecomarket_user_email', validUser.email);
+                            localStorage.setItem('ecomarket_user_name', validUser.name);
                             localStorage.setItem('ecomarket_logged_in', 'true');
                             
-                            alert(`¡Bienvenido ${email}! Iniciando sesión...`);
+                            // Guardar usuario actual completo
+                            localStorage.setItem('ecomarket_current_user', JSON.stringify({
+                                id: validUser.id,
+                                name: validUser.name,
+                                email: validUser.email
+                            }));
+                            
+                            showNotification(`¡Bienvenido ${validUser.name}! Iniciando sesión...`, 'success');
                             setTimeout(() => {
                                 window.location.href = 'index.html';
-                            }, 1000);
+                            }, 1500);
                             return;
                         } else {
-                            alert('La contraseña debe tener al menos 4 caracteres.');
+                            showNotification('Credenciales incorrectas. Para pruebas usa: usuario@prueba.com / 1234', 'error');
                             return;
                         }
                     }
                 } else {
                     // Lógica de registro - NO permitir "admin" como registro
                     if (email.toLowerCase() === 'admin') {
-                        alert('No puedes registrarte con el nombre "admin". Este está reservado para administradores.');
+                        showNotification('No puedes registrarte con el nombre "admin". Este está reservado para administradores.', 'warning');
                         return;
                     }
                     
                     // Validar formato de email para registro
                     if (!isValidEmailOrAdmin(email)) {
-                        alert('Por favor ingresa un correo electrónico válido para el registro.');
+                        showNotification('Por favor ingresa un correo electrónico válido para el registro.', 'warning');
                         return;
                     }
                     
                     if (name && email && password.length >= 4) {
-                        // Simular registro exitoso
+                        // Verificar si el email ya está registrado
+                        let registeredUsers = JSON.parse(localStorage.getItem('ecomarket_registered_users')) || [];
+                        const existingUser = registeredUsers.find(user => user.email === email);
+                        
+                        if (existingUser) {
+                            showNotification('Este correo electrónico ya está registrado. Intenta iniciar sesión.', 'warning');
+                            return;
+                        }
+                        
+                        // Crear nuevo usuario
+                        const newUser = {
+                            id: 'user-' + Date.now(),
+                            name: name,
+                            email: email,
+                            password: password,
+                            type: 'user'
+                        };
+                        
+                        // Guardar en lista de usuarios registrados
+                        registeredUsers.push(newUser);
+                        localStorage.setItem('ecomarket_registered_users', JSON.stringify(registeredUsers));
+                        
+                        // Login automático después del registro
                         localStorage.setItem('ecomarket_user_type', 'user');
-                        localStorage.setItem('ecomarket_user_email', email);
-                        localStorage.setItem('ecomarket_user_name', name);
+                        localStorage.setItem('ecomarket_user_email', newUser.email);
+                        localStorage.setItem('ecomarket_user_name', newUser.name);
                         localStorage.setItem('ecomarket_logged_in', 'true');
                         
-                        alert(`¡Cuenta creada exitosamente para ${name}! Iniciando sesión...`);
+                        // Guardar usuario actual completo
+                        localStorage.setItem('ecomarket_current_user', JSON.stringify({
+                            id: newUser.id,
+                            name: newUser.name,
+                            email: newUser.email
+                        }));
+                        
+                        showNotification(`¡Cuenta creada exitosamente para ${name}! Iniciando sesión...`, 'success');
                         setTimeout(() => {
                             window.location.href = 'index.html';
-                        }, 1000);
+                        }, 1500);
                         return;
                     } else {
-                        alert('Por favor completa todos los campos. La contraseña debe tener al menos 4 caracteres.');
+                        showNotification('Por favor completa todos los campos. La contraseña debe tener al menos 4 caracteres.', 'warning');
                         return;
                     }
                 }
@@ -523,6 +591,9 @@
                     loadFooter();
                 }
             }, 500);
+            
+            // === INICIALIZAR USUARIO DE PRUEBA ===
+            createTestUser();
         });
     </script>
     </body>

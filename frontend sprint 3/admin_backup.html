@@ -30,22 +30,6 @@
             margin-bottom: 2rem;
         }
         
-        /* Arreglar problema del precio total cortado */
-        .order-card .col-md-3:last-child {
-            min-width: 160px;
-        }
-
-        @media (max-width: 991px) {
-            .order-card .col-md-3 {
-                margin-bottom: 10px;
-            }
-            
-            .order-total {
-                font-size: 1.1rem;
-                margin-bottom: 5px;
-            }
-        }
-
         /* Responsive styles for mobile */
         @media (max-width: 768px) {
             .admin-container {
@@ -378,9 +362,6 @@
             font-size: 1.2rem;
             font-weight: bold;
             color: #008c5a;
-            white-space: nowrap;
-            overflow: visible;
-            text-overflow: clip;
         }
         
         .order-items {
@@ -502,131 +483,6 @@
         .status-entregado {
             background-color: #e8f5e8;
             color: #2e7d32;
-        }
-        
-        .status-cancelado {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-
-        /* Sistema de notificaciones elegante */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            min-width: 300px;
-            max-width: 400px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #008c5a;
-            z-index: 1050;
-            overflow: hidden;
-            animation: slideInRight 0.3s ease-out;
-        }
-
-        .notification.success { border-left-color: #28a745; }
-        .notification.error { border-left-color: #dc3545; }
-        .notification.warning { border-left-color: #ffc107; }
-        .notification.info { border-left-color: #17a2b8; }
-
-        .notification-header {
-            padding: 16px 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .notification-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .notification-icon.success { background: #d4edda; color: #155724; }
-        .notification-icon.error { background: #f8d7da; color: #721c24; }
-        .notification-icon.warning { background: #fff3cd; color: #856404; }
-        .notification-icon.info { background: #d1ecf1; color: #0c5460; }
-
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-message {
-            color: #2c3e50;
-            font-size: 14px;
-            line-height: 1.4;
-            margin: 0;
-        }
-
-        .notification-close {
-            background: none;
-            border: none;
-            color: #6c757d;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
-
-        .notification-close:hover {
-            background-color: #f8f9fa;
-        }
-
-        .notification-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #008c5a, #00b374);
-            transition: width 0.1s linear;
-        }
-
-        .notification.success .notification-progress { background: linear-gradient(90deg, #28a745, #34ce57); }
-        .notification.error .notification-progress { background: linear-gradient(90deg, #dc3545, #e74c3c); }
-        .notification.warning .notification-progress { background: linear-gradient(90deg, #ffc107, #f39c12); }
-        .notification.info .notification-progress { background: linear-gradient(90deg, #17a2b8, #3498db); }
-
-        @keyframes slideInRight {
-            from { 
-                transform: translateX(100%); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateX(0); 
-                opacity: 1; 
-            }
-        }
-
-        @keyframes slideOutRight {
-            from { 
-                transform: translateX(0); 
-                opacity: 1; 
-            }
-            to { 
-                transform: translateX(100%); 
-                opacity: 0; 
-            }
-        }
-
-        /* Responsive para notificaciones */
-        @media (max-width: 768px) {
-            .notification {
-                right: 10px;
-                left: 10px;
-                min-width: auto;
-                max-width: none;
-            }
         }
     </style>
 </head>
@@ -809,12 +665,6 @@
                 <div class="section-header" data-bs-toggle="collapse" data-bs-target="#collapse-orders" aria-expanded="false" aria-controls="collapse-orders" style="cursor: pointer;">
                     <h3><i class="bi bi-clock-history"></i> Pedidos Pendientes <i class="bi bi-chevron-down ms-2 collapse-icon"></i></h3>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-info btn-sm" onclick="generateTestOrders()" data-bs-toggle="tooltip" title="Generar pedidos de prueba con productos reales">
-                            <i class="bi bi-plus-circle"></i> Generar Prueba
-                        </button>
-                        <button class="btn btn-warning btn-sm" onclick="clearAllOrders()" data-bs-toggle="tooltip" title="Limpiar todos los pedidos antiguos">
-                            <i class="bi bi-trash3"></i> Limpiar Todo
-                        </button>
                         <button class="btn btn-success btn-sm" onclick="refreshOrders()" data-bs-toggle="tooltip" title="Actualizar lista de pedidos">
                             <i class="bi bi-arrow-clockwise"></i> Actualizar
                         </button>
@@ -958,126 +808,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sistema de administración de productos - Versión limpia
+        // Sistema de administración de productos
         let isEditing = false;
-
-        // ========================
-        // SISTEMA DE NOTIFICACIONES ELEGANTE
-        // ========================
-        function showNotification(message, type = 'success', duration = 4000) {
-            const notificationId = 'notification-' + Date.now();
-            
-            const icons = {
-                success: '<i class="bi bi-check-circle-fill"></i>',
-                error: '<i class="bi bi-x-circle-fill"></i>',
-                warning: '<i class="bi bi-exclamation-triangle-fill"></i>',
-                info: '<i class="bi bi-info-circle-fill"></i>'
-            };
-
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.id = notificationId;
-            notification.innerHTML = `
-                <div class="notification-header">
-                    <div class="d-flex align-items-start">
-                        <div class="notification-icon ${type}">
-                            ${icons[type]}
-                        </div>
-                        <div class="notification-content">
-                            <p class="notification-message">${message}</p>
-                        </div>
-                        <button class="notification-close" onclick="closeNotification('${notificationId}')">
-                            <i class="bi bi-x"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="notification-progress" style="width: 100%"></div>
-            `;
-
-            document.body.appendChild(notification);
-
-            // Animar la barra de progreso
-            setTimeout(() => {
-                const progressBar = notification.querySelector('.notification-progress');
-                if (progressBar) {
-                    progressBar.style.width = '0%';
-                    progressBar.style.transition = `width ${duration}ms linear`;
-                }
-            }, 100);
-
-            // Auto-cerrar después del tiempo especificado
-            setTimeout(() => {
-                closeNotification(notificationId);
-            }, duration);
-
-            return notificationId;
-        }
-
-        function closeNotification(notificationId) {
-            const notification = document.getElementById(notificationId);
-            if (notification) {
-                notification.style.animation = 'slideOutRight 0.3s ease-out';
-                setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
-            }
-        }
-
-        // Función de confirmación elegante
-        function showConfirmation(message, onConfirm, onCancel = null) {
-            const confirmationId = 'confirmation-' + Date.now();
-            
-            const confirmation = document.createElement('div');
-            confirmation.className = 'notification warning';
-            confirmation.id = confirmationId;
-            confirmation.style.zIndex = '1060'; // Más alto que las notificaciones normales
-            
-            confirmation.innerHTML = `
-                <div class="notification-header">
-                    <div class="d-flex align-items-start">
-                        <div class="notification-icon warning">
-                            <i class="bi bi-question-circle-fill"></i>
-                        </div>
-                        <div class="notification-content">
-                            <p class="notification-message">${message}</p>
-                            <div class="mt-2 d-flex gap-2">
-                                <button class="btn btn-sm btn-success" onclick="confirmAction('${confirmationId}', true)">
-                                    <i class="bi bi-check"></i> Aceptar
-                                </button>
-                                <button class="btn btn-sm btn-secondary" onclick="confirmAction('${confirmationId}', false)">
-                                    <i class="bi bi-x"></i> Cancelar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.appendChild(confirmation);
-            
-            // Guardar callbacks para usar después
-            window.confirmCallbacks = window.confirmCallbacks || {};
-            window.confirmCallbacks[confirmationId] = { onConfirm, onCancel };
-
-            return confirmationId;
-        }
-
-        // Manejar acción de confirmación
-        function confirmAction(confirmationId, accepted) {
-            const callbacks = window.confirmCallbacks[confirmationId];
-            
-            if (accepted && callbacks.onConfirm) {
-                callbacks.onConfirm();
-            } else if (!accepted && callbacks.onCancel) {
-                callbacks.onCancel();
-            }
-            
-            // Limpiar
-            delete window.confirmCallbacks[confirmationId];
-            closeNotification(confirmationId);
-        }
         
         // Obtener productos del localStorage
         function getProducts() {
@@ -1211,25 +943,20 @@
         
         // Eliminar producto
         function deleteProduct(productId) {
-            showConfirmation(
-                '¿Estás seguro de que deseas eliminar este producto?',
-                function() {
-                    const products = getProducts();
-                    const updatedProducts = products.filter(p => p.id !== productId);
-                    saveProducts(updatedProducts);
-                    renderProductsList();
-                    updateStats();
-                    
-                    showNotification('Producto eliminado correctamente', 'success');
-                }
-            );
+            if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+            
+            const products = getProducts();
+            const updatedProducts = products.filter(p => p.id !== productId);
+            saveProducts(updatedProducts);
+            renderProductsList();
+            updateStats();
+            
+            alert('Producto eliminado correctamente');
         }
         
         // Restaurar productos por defecto
         function resetToDefaults() {
-            showConfirmation(
-                '¿Estás seguro? Esto eliminará todos los productos actuales y restaurará los valores por defecto.',
-                function() {
+            if (!confirm('¿Estás seguro? Esto eliminará todos los productos actuales y restaurará los valores por defecto.')) return;
             
             // Productos por defecto (mismos que en catalog.js)
             const defaultProducts = [
@@ -1308,9 +1035,7 @@
             updateStats();
             clearForm();
             
-            showNotification('Productos restaurados a valores por defecto', 'info');
-                }
-            );
+            alert('Productos restaurados a valores por defecto');
         }
         
         // Manejar envío del formulario
@@ -1337,12 +1062,12 @@
             
             // Validaciones básicas
             if (formData.price <= 0) {
-                showNotification('El precio debe ser mayor a 0', 'error');
+                alert('El precio debe ser mayor a 0');
                 return;
             }
             
             if (formData.stock > formData.maxStock) {
-                showNotification('El stock actual no puede ser mayor al stock máximo', 'error');
+                alert('El stock actual no puede ser mayor al stock máximo');
                 return;
             }
             
@@ -1356,12 +1081,12 @@
                 const index = products.findIndex(p => p.id === formData.id);
                 if (index !== -1) {
                     products[index] = formData;
-                    showNotification('Producto actualizado correctamente', 'success');
+                    alert('Producto actualizado correctamente');
                 }
             } else {
                 // Agregar nuevo producto
                 products.push(formData);
-                showNotification('Producto agregado correctamente', 'success');
+                alert('Producto agregado correctamente');
             }
             
             saveProducts(products);
@@ -1372,25 +1097,15 @@
         
         // Función para cerrar sesión
         function logout() {
-            showConfirmation(
-                '¿Estás seguro de que deseas cerrar sesión?',
-                function() {
-                    // Confirmar logout
-                    localStorage.removeItem('ecomarket_logged_in');
-                    localStorage.removeItem('ecomarket_user_type');
-                    localStorage.removeItem('ecomarket_user_email');
-                    localStorage.removeItem('ecomarket_user_name');
-                    
-                    showNotification('Sesión cerrada correctamente', 'info');
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 1500);
-                },
-                function() {
-                    // Cancelar logout
-                    showNotification('Sesión mantenida', 'info', 2000);
-                }
-            );
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                localStorage.removeItem('ecomarket_logged_in');
+                localStorage.removeItem('ecomarket_user_type');
+                localStorage.removeItem('ecomarket_user_email');
+                localStorage.removeItem('ecomarket_user_name');
+                
+                alert('Sesión cerrada correctamente');
+                window.location.href = 'login.html';
+            }
         }
         
         // Verificar autenticación
@@ -1399,10 +1114,8 @@
             const userType = localStorage.getItem('ecomarket_user_type');
             
             if (!isLoggedIn || userType !== 'admin') {
-                showNotification('Acceso denegado. Debes iniciar sesión como administrador.', 'error');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
+                alert('Acceso denegado. Debes iniciar sesión como administrador.');
+                window.location.href = 'login.html';
                 return false;
             }
             return true;
@@ -1415,22 +1128,18 @@
         // Obtener pedidos del localStorage
         function getOrders() {
             const orders = localStorage.getItem('ecomarket_orders');
-            const parsedOrders = orders ? JSON.parse(orders) : [];
-            console.log('Pedidos cargados:', parsedOrders.length, parsedOrders);
-            return parsedOrders;
+            return orders ? JSON.parse(orders) : [];
         }
         
         // Renderizar lista de pedidos
         function renderOrdersList() {
             const orders = getOrders();
-            console.log('Renderizando pedidos:', orders.length);
             const container = document.getElementById('orders-list');
             const pendingCount = document.getElementById('pending-orders-count');
             
             // Filtrar pedidos pendientes (no entregados)
             const pendingOrders = orders.filter(order => order.status !== 'entregado');
-            console.log('Pedidos pendientes:', pendingOrders.length);
-            if (pendingCount) pendingCount.textContent = pendingOrders.length;
+            pendingCount.textContent = pendingOrders.length;
             
             if (orders.length === 0) {
                 container.innerHTML = '<div class="text-center text-muted py-5">' +
@@ -1443,43 +1152,13 @@
             
             let ordersHtml = '';
             orders.forEach(order => {
-                console.log('Renderizando pedido:', order);
-                console.log('Items del pedido en renderOrdersList:', order.items);
-                
                 let itemsHtml = '';
-                if (order.items && order.items.length > 0) {
-                    order.items.forEach(item => {
-                        console.log('Renderizando item en lista:', item);
-                        
-                        // Mejorar el nombre del producto
-                        let itemName = item.name;
-                        if (!itemName || itemName === 'Producto sin nombre') {
-                            // Mapear productos conocidos por ID si está disponible - Lista completa
-                            const productMap = {
-                                'frutillas': 'Frutillas Frescas Premium',
-                                'lechuga': 'Lechuga Criolla Fresca',
-                                'tomates': 'Tomates Cherry Orgánicos',
-                                'zanahorias': 'Zanahorias Baby Premium',
-                                'manzanas': 'Manzanas Red Delicious',
-                                'bananas': 'Bananas Premium',
-                                'peras': 'Peras Williams',
-                                'apio': 'Apio Fresco Orgánico'
-                            };
-                            itemName = productMap[item.productId] || item.productId || 'Producto del catálogo';
-                        }
-                        
-                        const itemQuantity = parseInt(item.quantity) || 1;
-                        const itemUnit = item.unit || 'unidad';
-                        const itemPrice = parseFloat(item.price) || 0;
-                        
-                        itemsHtml += '<div class="order-item">' +
-                            '<span>' + itemName + ' (' + itemQuantity + ' ' + itemUnit + ')</span>' +
-                            '<span>$' + (itemPrice * itemQuantity).toLocaleString() + '</span>' +
-                            '</div>';
-                    });
-                } else {
-                    itemsHtml = '<div class="order-item"><span>No hay productos</span><span>$0</span></div>';
-                }
+                order.items.forEach(item => {
+                    itemsHtml += '<div class="order-item">' +
+                        '<span>' + item.name + ' (' + item.quantity + ' ' + item.unit + ')</span>' +
+                        '<span>$' + (item.price * item.quantity).toLocaleString() + '</span>' +
+                        '</div>';
+                });
                 
                 ordersHtml += '<div class="order-card">' +
                     '<div class="order-status">' +
@@ -1504,7 +1183,7 @@
                     '<small class="text-muted">Pago: ' + getPaymentMethodName(order.payment.method) + '</small>' +
                     '</div>' +
                     '<div class="col-md-3 text-end">' +
-                    '<div class="order-total">Total: ' + formatOrderTotal(order.total) + '</div>' +
+                    '<div class="order-total">Total: $' + order.total.toLocaleString() + '</div>' +
                     '<div class="mt-2">' +
                     '<button class="btn btn-sm btn-outline-primary me-1" onclick="viewOrderDetails(\'' + order.id + '\')">' +
                     '<i class="bi bi-eye"></i> Ver' +
@@ -1546,122 +1225,36 @@
         }
         
         // Actualizar estado de pedido
-        // Función helper para formatear el total correctamente
-        function formatOrderTotal(total) {
-            const numericTotal = parseFloat(total) || 0;
-            return Math.round(numericTotal).toLocaleString();
-        }
-
         function updateOrderStatus(orderId, newStatus) {
             const orders = getOrders();
             const orderIndex = orders.findIndex(o => o.id === orderId);
             
             if (orderIndex !== -1) {
-                const order = orders[orderIndex];
-                order.status = newStatus;
-                order.lastUpdated = new Date().toISOString();
-                
-                // Actualizar en el historial general
+                orders[orderIndex].status = newStatus;
+                orders[orderIndex].lastUpdated = new Date().toISOString();
                 localStorage.setItem('ecomarket_orders', JSON.stringify(orders));
-                
-                // Actualizar también en el historial específico del usuario
-                const userId = order.customer.id;
-                let userOrders = JSON.parse(localStorage.getItem('ecomarket_user_orders_' + userId)) || [];
-                const userOrderIndex = userOrders.findIndex(o => o.id === orderId);
-                if (userOrderIndex !== -1) {
-                    userOrders[userOrderIndex] = order;
-                    localStorage.setItem('ecomarket_user_orders_' + userId, JSON.stringify(userOrders));
-                }
-                
                 renderOrdersList();
                 updateReportsData();
-                
-                // Mostrar mensaje personalizado según el estado
-                const statusMessages = {
-                    'confirmado': 'Pedido confirmado correctamente',
-                    'procesando': 'Pedido marcado como procesando',
-                    'enviado': 'Pedido marcado como enviado',
-                    'entregado': 'Pedido marcado como entregado',
-                    'cancelado': 'Pedido cancelado'
-                };
-                showNotification(statusMessages[newStatus] || 'Pedido actualizado', 'success');
+                alert('Pedido actualizado a: ' + newStatus);
             }
-        }
-        
-        // Función para cancelar pedido (alias para updateOrderStatus)
-        function cancelOrder(orderId) {
-            showConfirmation(
-                '¿Estás seguro de que deseas cancelar este pedido?',
-                function() {
-                    updateOrderStatus(orderId, 'cancelado');
-                }
-            );
         }
         
         // Ver detalles del pedido
         function viewOrderDetails(orderId) {
-            console.log('Intentando ver detalles del pedido:', orderId);
             const orders = getOrders();
             const order = orders.find(o => o.id === orderId);
             
-            if (!order) {
-                console.error('Pedido no encontrado:', orderId);
-                showNotification('Pedido no encontrado', 'error');
-                return;
-            }
-            
-            console.log('Pedido encontrado:', order);
-            console.log('Items del pedido en viewOrderDetails:', order.items);
+            if (!order) return;
             
             let itemsHtml = '';
-            let calculatedTotal = 0;
-            if (order.items && order.items.length > 0) {
-                order.items.forEach((item, index) => {
-                    console.log('Procesando item ' + index + ':', item);
-                    console.log('- Nombre:', item.name, 'Tipo:', typeof item.name);
-                    console.log('- Precio:', item.price, 'Tipo:', typeof item.price);
-                    console.log('- Cantidad:', item.quantity, 'Tipo:', typeof item.quantity);
-                    
-                    const itemPrice = parseFloat(item.price) || 0;
-                    const itemQuantity = parseInt(item.quantity) || 1;
-                    const itemUnit = item.unit || 'unidad';
-                    
-                    // Sumar al total calculado
-                    calculatedTotal += itemPrice * itemQuantity;
-                    
-                    // Mejorar el nombre del producto
-                    let itemName = item.name;
-                    if (!itemName || itemName === 'Producto sin nombre' || itemName === 'Sin nombre') {
-                        // Mapear productos conocidos por ID si está disponible - Lista completa
-                        const productMap = {
-                            'frutillas': 'Frutillas Frescas Premium',
-                            'lechuga': 'Lechuga Criolla Fresca',
-                            'tomates': 'Tomates Cherry Orgánicos',
-                            'zanahorias': 'Zanahorias Baby Premium',
-                            'manzanas': 'Manzanas Red Delicious',
-                            'bananas': 'Bananas Premium',
-                            'peras': 'Peras Williams',
-                            'apio': 'Apio Fresco Orgánico'
-                        };
-                        itemName = productMap[item.productId] || item.productId || 'Producto del catálogo';
-                    }
-                    
-                    console.log('- Valores procesados: nombre=' + itemName + ', precio=' + itemPrice + ', cantidad=' + itemQuantity);
-                    
-                    itemsHtml += '<tr>' +
-                        '<td>' + itemName + '</td>' +
-                        '<td>' + itemQuantity + ' ' + itemUnit + '</td>' +
-                        '<td>$' + itemPrice.toLocaleString() + '</td>' +
-                        '<td>$' + (itemPrice * itemQuantity).toLocaleString() + '</td>' +
-                        '</tr>';
-                });
-            } else {
-                itemsHtml = '<tr><td colspan="4">No hay productos en este pedido</td></tr>';
-            }
-            
-            // Usar el total calculado si el total del pedido es 0 o indefinido
-            const finalTotal = order.total && order.total > 0 ? order.total : calculatedTotal;
-            console.log('Total del pedido:', order.total, 'Total calculado:', calculatedTotal, 'Total final:', finalTotal);
+            order.items.forEach(item => {
+                itemsHtml += '<tr>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.quantity + ' ' + item.unit + '</td>' +
+                    '<td>$' + item.price.toLocaleString() + '</td>' +
+                    '<td>$' + (item.price * item.quantity).toLocaleString() + '</td>' +
+                    '</tr>';
+            });
             
             let lastUpdatedHtml = '';
             if (order.lastUpdated) {
@@ -1707,7 +1300,7 @@
                 '<tfoot>' +
                 '<tr class="table-success">' +
                 '<th colspan="3">Total</th>' +
-                '<th>$' + finalTotal.toLocaleString() + '</th>' +
+                '<th>$' + order.total.toLocaleString() + '</th>' +
                 '</tr>' +
                 '</tfoot>' +
                 '</table>' +
@@ -1736,14 +1329,8 @@
             document.body.insertAdjacentHTML('beforeend', modalHTML);
             
             // Mostrar modal
-            try {
-                const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
-                modal.show();
-                console.log('Modal mostrado exitosamente');
-            } catch (error) {
-                console.error('Error mostrando modal:', error);
-                showNotification('Error mostrando detalles del pedido. Revisa la consola para más información.', 'error');
-            }
+            const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+            modal.show();
         }
         
         // Cancelar pedido
@@ -1832,7 +1419,7 @@
                     '<small class="text-muted">Pago: ' + getPaymentMethodName(order.payment.method) + '</small>' +
                     '</div>' +
                     '<div class="col-md-3 text-end">' +
-                    '<div class="order-total">Total: ' + formatOrderTotal(order.total) + '</div>' +
+                    '<div class="order-total">Total: $' + order.total.toLocaleString() + '</div>' +
                     '<div class="mt-2">' +
                     '<button class="btn btn-sm btn-outline-primary me-1" onclick="viewOrderDetails(\'' + order.id + '\')">' +
                     '<i class="bi bi-eye"></i> Ver' +
@@ -1874,30 +1461,7 @@
         // Actualizar lista de pedidos
         function refreshOrders() {
             renderOrdersList();
-            showNotification('Lista de pedidos actualizada', 'info');
-        }
-
-        // Limpiar todos los pedidos
-        function clearAllOrders() {
-            showConfirmation(
-                '¿Estás seguro de que deseas eliminar TODOS los pedidos? Esta acción no se puede deshacer.',
-                function() {
-                    // Limpiar todos los pedidos del localStorage
-                    localStorage.removeItem('ecomarket_orders');
-                    
-                    // Limpiar también los historiales específicos de usuarios
-                    const keys = Object.keys(localStorage);
-                    keys.forEach(key => {
-                        if (key.startsWith('ecomarket_user_orders_')) {
-                            localStorage.removeItem(key);
-                        }
-                    });
-                    
-                    renderOrdersList();
-                    updateReportsData();
-                    showNotification('Todos los pedidos han sido eliminados', 'warning');
-                }
-            );
+            alert('Lista de pedidos actualizada');
         }
 
         // ========================
@@ -2073,7 +1637,7 @@
         // Generar informe
         function generateReport() {
             updateReportsData();
-            showNotification('Informe actualizado con los datos más recientes', 'success');
+            alert('Informe actualizado con los datos más recientes');
         }
         
         // Exportar informe
@@ -2102,182 +1666,101 @@
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
             
-            showNotification('Informe exportado correctamente', 'success');
+            alert('Informe exportado correctamente');
         }
         
         // Imprimir pedido
         function printOrder(orderId) {
-            showNotification('Función de impresión temporalmente deshabilitada para evitar errores', 'warning');
+            const orders = getOrders();
+            const order = orders.find(o => o.id === orderId);
+            
+            if (!order) return;
+            
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Pedido #' + order.id + '</title>' +
+                '<style>' +
+                'body { font-family: Arial, sans-serif; margin: 20px; }' +
+                '.header { text-align: center; border-bottom: 2px solid #008c5a; padding-bottom: 10px; }' +
+                '.info { margin: 20px 0; }' +
+                'table { width: 100%; border-collapse: collapse; margin: 20px 0; }' +
+                'th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }' +
+                'th { background-color: #008c5a; color: white; }' +
+                '.total { font-weight: bold; background-color: #f0f8ff; }' +
+                '</style></head><body>' +
+                '<div class="header">' +
+                '<h1>EcoMarket</h1>' +
+                '<h2>Pedido #' + order.id + '</h2>' +
+                '</div>' +
+                '<div class="info">' +
+                '<p><strong>Fecha:</strong> ' + new Date(order.date).toLocaleString() + '</p>' +
+                '<p><strong>Cliente:</strong> ' + order.customer.name + '</p>' +
+                '<p><strong>Email:</strong> ' + order.customer.email + '</p>' +
+                '<p><strong>Teléfono:</strong> ' + order.customer.phone + '</p>' +
+                '<p><strong>Dirección:</strong> ' + order.delivery.address + ', ' + order.delivery.city + '</p>' +
+                '<p><strong>Estado:</strong> ' + order.status + '</p>' +
+                '</div>' +
+                '<table><thead><tr>' +
+                '<th>Producto</th><th>Cantidad</th><th>Precio Unitario</th><th>Subtotal</th>' +
+                '</tr></thead><tbody>' +
+                order.items.map(item => 
+                    '<tr>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.quantity + ' ' + item.unit + '</td>' +
+                    '<td>$' + item.price.toLocaleString() + '</td>' +
+                    '<td>$' + (item.price * item.quantity).toLocaleString() + '</td>' +
+                    '</tr>'
+                ).join('') +
+                '</tbody><tfoot>' +
+                '<tr class="total">' +
+                '<td colspan="3">Total</td>' +
+                '<td>$' + order.total.toLocaleString() + '</td>' +
+                '</tr></tfoot></table>' +
+                '<div class="info">' +
+                '<p><strong>Método de Pago:</strong> ' + getPaymentMethodName(order.payment.method) + '</p>' +
+                '</div></body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
         }
 
-        // Función temporal para generar pedidos de prueba (solo para testing)
-        function generateTestOrders() {
-            const testUser = {
-                id: 'test-user-001',
-                name: 'Usuario Prueba',
-                email: 'usuario@prueba.com'
-            };
-            
-            // Asegurar que el usuario esté logueado
-            localStorage.setItem('ecomarket_current_user', JSON.stringify(testUser));
-            
-            // Productos reales del catálogo - exactamente como están definidos en productMap
-            const availableProducts = [
-                { name: 'Frutillas Frescas Premium', unit: 'kg', price: 1600, id: 'frutillas' },
-                { name: 'Lechuga Criolla Fresca', unit: 'unidad', price: 1200, id: 'lechuga' },
-                { name: 'Tomates Cherry Orgánicos', unit: 'kg', price: 2800, id: 'tomates' },
-                { name: 'Zanahorias Baby Premium', unit: 'kg', price: 1800, id: 'zanahorias' },
-                { name: 'Manzanas Red Delicious', unit: 'kg', price: 2200, id: 'manzanas' },
-                { name: 'Bananas Premium', unit: 'kg', price: 1500, id: 'bananas' },
-                { name: 'Peras Williams', unit: 'kg', price: 2900, id: 'peras' },
-                { name: 'Apio Fresco Orgánico', unit: 'atado', price: 1400, id: 'apio' }
-            ];
+        // Los datos de pedidos se cargarán desde localStorage cuando los usuarios hagan compras reales
 
-            const testOrders = [
-                {
-                    id: 'ORD' + Date.now(),
-                    date: new Date().toISOString(),
-                    status: 'confirmado',
-                    customer: {
-                        id: testUser.id,
-                        name: testUser.name,
-                        email: testUser.email,
-                        phone: '+57 300 123 4567'
-                    },
-                    delivery: {
-                        address: 'Los sonetos 949',
-                        city: 'Maipú',
-                        postal: '12345',
-                        notes: 'Casa color azul'
-                    },
-                    payment: {
-                        method: 'credit-card'
-                    },
-                    items: [
-                        { 
-                            name: availableProducts[0].name, 
-                            quantity: 2, 
-                            unit: availableProducts[0].unit, 
-                            price: availableProducts[0].price,
-                            productId: availableProducts[0].id
-                        },
-                        { 
-                            name: availableProducts[2].name, 
-                            quantity: 1, 
-                            unit: availableProducts[2].unit, 
-                            price: availableProducts[2].price,
-                            productId: availableProducts[2].id
-                        },
-                        { 
-                            name: availableProducts[1].name, 
-                            quantity: 3, 
-                            unit: availableProducts[1].unit, 
-                            price: availableProducts[1].price,
-                            productId: availableProducts[1].id
-                        }
-                    ],
-                    total: 9400, // (1600 * 2) + (2800 * 1) + (1200 * 3) = 3200 + 2800 + 3600
-                    lastUpdated: new Date().toISOString()
-                },
-                {
-                    id: 'ORD' + (Date.now() + 1),
-                    date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Ayer
-                    status: 'procesando',
-                    customer: {
-                        id: testUser.id,
-                        name: testUser.name,
-                        email: testUser.email,
-                        phone: '+57 300 123 4567'
-                    },
-                    delivery: {
-                        address: 'Av. Libertador 2358',
-                        city: 'Santiago',
-                        postal: '54321',
-                        notes: 'Departamento 4B'
-                    },
-                    payment: {
-                        method: 'bank-transfer'
-                    },
-                    items: [
-                        { 
-                            name: availableProducts[3].name, 
-                            quantity: 2, 
-                            unit: availableProducts[3].unit, 
-                            price: availableProducts[3].price,
-                            productId: availableProducts[3].id
-                        },
-                        { 
-                            name: availableProducts[4].name, 
-                            quantity: 1, 
-                            unit: availableProducts[4].unit, 
-                            price: availableProducts[4].price,
-                            productId: availableProducts[4].id
-                        }
-                    ],
-                    total: 5800, // (1800 * 2) + (2200 * 1) = 3600 + 2200
-                    lastUpdated: new Date().toISOString()
-                }
-            ];
-            
-            // Limpiar TODOS los pedidos existentes antes de agregar el nuevo
-            localStorage.removeItem('ecomarket_orders');
-            localStorage.removeItem('ecomarket_user_orders_' + testUser.id);
-            
-            // Ahora guardar el pedido nuevo
-            localStorage.setItem('ecomarket_orders', JSON.stringify(testOrders));
-            
-            // También guardar en historial del usuario
-            localStorage.setItem('ecomarket_user_orders_' + testUser.id, JSON.stringify(testOrders));
-            
-            console.log('Pedido de prueba generado:', testOrders[0]);
-            console.log('Items del pedido:', testOrders[0].items);
-            
-            // Verificar que se guardó correctamente
-            const savedOrders = JSON.parse(localStorage.getItem('ecomarket_orders'));
-            console.log('Pedidos guardados:', savedOrders);
-            console.log('Items del primer pedido guardado:', savedOrders[0].items);
-            
-            renderOrdersList();
-            updateReportsData();
-            showNotification('¡Pedidos de prueba con productos reales generados exitosamente!', 'success');
-        }
-        
-        // Inicialización del panel de administración
+        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            if (!checkAuth()) return;
+            // Verificar autenticación antes de cargar el panel
+            if (!checkAuth()) {
+                return;
+            }
+            
+            // El sistema cargará los pedidos reales desde localStorage
             
             renderProductsList();
             updateStats();
             renderOrdersList();
             updateReportsData();
             
-            // Añadir función de test al window para debug
-            window.generateTestOrders = generateTestOrders;
-            
             // Inicializar tooltips
-            var tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            tooltips.forEach(function(el) {
-                new bootstrap.Tooltip(el);
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
             
-            // Efectos de animación para secciones colapsables
-            var collapseElements = document.querySelectorAll('[data-bs-toggle="collapse"]');
-            collapseElements.forEach(function(element) {
+            // Agregar efectos de animación a las secciones colapsables
+            document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(element => {
                 element.addEventListener('click', function() {
-                    var icon = this.querySelector('.collapse-icon');
+                    const icon = this.querySelector('.collapse-icon');
                     if (icon) {
-                        var isExpanded = this.getAttribute('aria-expanded') === 'true';
-                        icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+                        icon.style.transform = this.getAttribute('aria-expanded') === 'true' ? 'rotate(0deg)' : 'rotate(180deg)';
                     }
                 });
             });
+            
+            // Mostrar información del usuario logueado
+            const userEmail = localStorage.getItem('ecomarket_user_email');
+            if (userEmail) {
+                console.log('Panel de administración inicializado para:', userEmail);
+            }
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-

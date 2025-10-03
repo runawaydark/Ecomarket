@@ -1,3 +1,182 @@
+// ===== SISTEMA DE NOTIFICACIONES Y CONFIRMACIONES GLOBALES =====
+// Función para mostrar notificaciones elegantes
+function showNotification(message, type = 'info', duration = 4000) {
+    // Crear el contenedor de notificaciones si no existe
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 350px;
+        `;
+        document.body.appendChild(container);
+    }
+
+    // Crear la notificación
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible notification-slide`;
+    notification.style.cssText = `
+        margin-bottom: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        border: none;
+        border-radius: 8px;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    `;
+    
+    notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="bi bi-${type === 'success' ? 'check-circle-fill' : 
+                               type === 'error' ? 'exclamation-triangle-fill' : 
+                               type === 'warning' ? 'exclamation-triangle-fill' : 'info-circle-fill'}"></i>
+            <span>${message}</span>
+            <button type="button" class="btn-close" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+        <div class="notification-progress" style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            width: 100%;
+            animation: progressBar ${duration}ms linear;
+        "></div>
+    `;
+
+    container.appendChild(notification);
+
+    // Agregar estilos de animación si no existen
+    if (!document.getElementById('notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            @keyframes progressBar {
+                from { width: 100%; }
+                to { width: 0%; }
+            }
+            .notification-slide {
+                animation: slideInRight 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Animar entrada
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 10);
+
+    // Auto eliminar después del tiempo especificado
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 300);
+    }, duration);
+}
+
+// Función para mostrar confirmaciones elegantes
+function showConfirmation(title, message, onConfirm, onCancel = null) {
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+
+    // Crear modal de confirmación
+    const modal = document.createElement('div');
+    modal.className = 'card';
+    modal.style.cssText = `
+        max-width: 400px;
+        margin: 20px;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    `;
+
+    modal.innerHTML = `
+        <div class="card-body text-center">
+            <div class="mb-3">
+                <i class="bi bi-question-circle-fill text-warning" style="font-size: 3rem;"></i>
+            </div>
+            <h5 class="card-title">${title}</h5>
+            <p class="card-text text-muted">${message}</p>
+            <div class="d-flex gap-2 justify-content-center">
+                <button class="btn btn-outline-secondary" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-danger" id="confirmBtn">Aceptar</button>
+            </div>
+        </div>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // Animar entrada
+    setTimeout(() => {
+        overlay.style.opacity = '1';
+        modal.style.transform = 'scale(1)';
+    }, 10);
+
+    // Función para cerrar modal
+    function closeModal() {
+        overlay.style.opacity = '0';
+        modal.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            if (overlay.parentNode) {
+                overlay.remove();
+            }
+        }, 300);
+    }
+
+    // Event listeners
+    modal.querySelector('#confirmBtn').addEventListener('click', () => {
+        closeModal();
+        if (onConfirm) onConfirm();
+    });
+
+    modal.querySelector('#cancelBtn').addEventListener('click', () => {
+        closeModal();
+        if (onCancel) onCancel();
+    });
+
+    // Cerrar con Escape
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            if (onCancel) onCancel();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+}
+
 // ===== SISTEMA DE CARRITO GLOBAL =====
 // Función para actualizar el contador del carrito en todas las páginas
 function updateCartCount() {
@@ -36,15 +215,23 @@ function checkAuthStatus() {
 
 // Función para cerrar sesión
 function logout() {
-    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-        localStorage.removeItem('ecomarket_logged_in');
-        localStorage.removeItem('ecomarket_user_type');
-        localStorage.removeItem('ecomarket_user_email');
-        localStorage.removeItem('ecomarket_user_name');
-        
-        alert('Sesión cerrada correctamente');
-        window.location.href = 'index.html';
-    }
+    showConfirmation(
+        '¿Estás seguro de que deseas cerrar sesión?',
+        'Se cerrará tu sesión actual',
+        function() {
+            localStorage.removeItem('ecomarket_logged_in');
+            localStorage.removeItem('ecomarket_user_type');
+            localStorage.removeItem('ecomarket_user_email');
+            localStorage.removeItem('ecomarket_user_name');
+            
+            showNotification('Sesión cerrada correctamente', 'success');
+            
+            // Pequeño delay para mostrar la notificación antes de redirigir
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 800);
+        }
+    );
 }
 
 // Actualizar navbar según estado de autenticación
@@ -153,8 +340,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const auth = checkAuthStatus();
     
     if (currentPage === 'admin.html' && (!auth.isLoggedIn || !auth.isAdmin)) {
-        alert('Acceso denegado. Debes iniciar sesión como administrador.');
-        window.location.href = 'login.html';
+        showNotification('Acceso denegado. Debes iniciar sesión como administrador.', 'error', 3000);
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1000);
     }
 });
 
@@ -374,7 +563,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const name = document.getElementById("name").value;
-    alert(`Hola ${name}, has iniciado sesión correctamente (ejemplo frontend)`);
+    showNotification(`Hola ${name}, has iniciado sesión correctamente (ejemplo frontend)`, 'success');
   });
 });
 
