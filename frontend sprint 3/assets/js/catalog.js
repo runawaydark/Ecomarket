@@ -857,6 +857,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Detectar filtro de categoría desde URL
+    applyCategoryFromURL();
+    
     // Renderizar productos iniciales
     renderProducts();
     updatePagination();
@@ -864,6 +867,82 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Sistema de catálogo inicializado');
 });
+
+// Función para aplicar filtro de categoría desde URL
+function applyCategoryFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoria = urlParams.get('categoria');
+    
+    if (categoria) {
+        // Mapear categorías de URL a nombres de categorías del sistema
+        const categoryMap = {
+            'frutas': 'Frutas',
+            'verduras': 'Verduras', 
+            'despensa': 'Despensa',
+            'ofertas': 'Ofertas'
+        };
+        
+        const categoryName = categoryMap[categoria.toLowerCase()];
+        
+        if (categoryName) {
+            // Desmarcar todas las categorías primero
+            document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Marcar la categoría correspondiente
+            const categoryCheckbox = Array.from(document.querySelectorAll('.category-checkbox'))
+                .find(cb => cb.value === categoria.toLowerCase());
+            
+            if (categoryCheckbox) {
+                categoryCheckbox.checked = true;
+                
+                // Aplicar filtros inmediatamente
+                applyFilters();
+                
+                // Actualizar el título para mostrar la categoría activa
+                updatePageTitleForCategory(categoryName);
+                
+                // Mostrar notificación
+                showToast(`Mostrando productos de: ${categoryName}`, 'info', 3000);
+            }
+            
+            // Manejar caso especial de ofertas
+            if (categoria.toLowerCase() === 'ofertas') {
+                // Filtrar solo productos con descuento u ofertas especiales
+                filteredProducts = allProducts.filter(product => 
+                    product.isOffer || product.originalPrice || product.discount > 0
+                );
+                renderProducts();
+                updatePagination();
+                updateProductsFoundCount();
+                updatePageTitleForCategory('Ofertas Especiales');
+                showToast('Mostrando ofertas especiales', 'success', 3000);
+            }
+        }
+    }
+}
+
+// Función para actualizar el título de la página según la categoría
+function updatePageTitleForCategory(categoryName) {
+    const heroTitle = document.querySelector('.hero-title .gradient-text');
+    const pageTitle = document.querySelector('title');
+    
+    if (heroTitle) {
+        heroTitle.textContent = `${categoryName} - EcoMarket`;
+    }
+    
+    if (pageTitle) {
+        pageTitle.textContent = `${categoryName} - EcoMarket`;
+    }
+    
+    // Actualizar contador de productos encontrados
+    const resultsInfo = document.querySelector('.results-info h5');
+    if (resultsInfo) {
+        const count = filteredProducts.length;
+        resultsInfo.textContent = `${count} producto${count !== 1 ? 's' : ''} en ${categoryName}`;
+    }
+}
 
 // Agregar estilos CSS para las animaciones de toast
 const toastStyles = document.createElement('style');
