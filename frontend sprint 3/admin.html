@@ -324,6 +324,113 @@
                 min-width: auto !important;
             }
             
+            /* Estilos mejorados para dropdowns de estado en móvil */
+            .dropdown-menu .dropdown-item {
+                padding: 16px 20px !important;
+                font-size: 16px !important;
+                line-height: 1.5 !important;
+                border-bottom: 1px solid #f1f3f4;
+                transition: all 0.2s ease;
+                white-space: nowrap !important;
+                min-height: 50px !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            
+            .dropdown-menu .dropdown-item:last-child {
+                border-bottom: none;
+            }
+            
+            .dropdown-menu .dropdown-item:hover,
+            .dropdown-menu .dropdown-item:focus {
+                background-color: #e8f5e8 !important;
+                color: #008c5a !important;
+                padding-left: 24px !important;
+            }
+            
+            .dropdown-menu .dropdown-item.text-danger:hover {
+                background-color: #ffeaea !important;
+                color: #dc3545 !important;
+            }
+            
+            /* Botón dropdown más grande en móvil */
+            .btn-group .btn-sm {
+                padding: 10px 16px !important;
+                font-size: 14px !important;
+                min-width: 140px !important;
+            }
+            
+            @media (max-width: 768px) {
+                .btn-group .btn-sm {
+                    padding: 14px 20px !important;
+                    font-size: 16px !important;
+                    min-width: 160px !important;
+                    width: 100% !important;
+                }
+            }
+            
+            /* Separador más visible */
+            .dropdown-divider {
+                margin: 8px 0 !important;
+                border-top: 2px solid #dee2e6 !important;
+            }
+            
+            /* Mejorar contenedor de botones en móvil */
+            .order-card .col-md-3 .mt-2 {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            
+            /* En pantallas más grandes, mantener en fila */
+            @media (min-width: 768px) {
+                .order-card .col-md-3 .mt-2 {
+                    display: flex !important;
+                    flex-direction: row !important;
+                    gap: 8px !important;
+                }
+            }
+            
+            /* Botones más grandes y fáciles de tocar */
+            .order-card .btn-sm {
+                padding: 10px 16px !important;
+                font-size: 14px !important;
+                min-height: 42px !important;
+                white-space: nowrap !important;
+            }
+            
+            /* Dropdown menu más espacioso */
+            .btn-group .dropdown-menu {
+                min-width: 220px !important;
+                width: 220px !important;
+                padding: 12px 0 !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+                border: 1px solid #e0e0e0 !important;
+                border-radius: 8px !important;
+                margin-top: 4px !important;
+            }
+            
+            /* En móvil hacer el dropdown aún más grande */
+            @media (max-width: 768px) {
+                .btn-group .dropdown-menu {
+                    min-width: 280px !important;
+                    width: 280px !important;
+                    padding: 16px 0 !important;
+                    font-size: 18px !important;
+                }
+                
+                .dropdown-menu .dropdown-item {
+                    padding: 18px 24px !important;
+                    font-size: 18px !important;
+                    min-height: 56px !important;
+                }
+                
+                .dropdown-menu .dropdown-item:hover,
+                .dropdown-menu .dropdown-item:focus {
+                    padding-left: 28px !important;
+                }
+            }
+            
             /* Reduce navbar padding on mobile */
             .navbar {
                 padding: 0.25rem 0.5rem !important;
@@ -1405,58 +1512,7 @@
         }
 
         // Función de confirmación elegante
-        function showConfirmation(message, onConfirm, onCancel = null) {
-            const confirmationId = 'confirmation-' + Date.now();
-            
-            const confirmation = document.createElement('div');
-            confirmation.className = 'notification warning';
-            confirmation.id = confirmationId;
-            confirmation.style.zIndex = '1060'; // Más alto que las notificaciones normales
-            
-            confirmation.innerHTML = `
-                <div class="notification-header">
-                    <div class="d-flex align-items-start">
-                        <div class="notification-icon warning">
-                            <i class="bi bi-question-circle-fill"></i>
-                        </div>
-                        <div class="notification-content">
-                            <p class="notification-message">${message}</p>
-                            <div class="mt-2 d-flex gap-2">
-                                <button class="btn btn-sm btn-success" onclick="confirmAction('${confirmationId}', true)">
-                                    <i class="bi bi-check"></i> Aceptar
-                                </button>
-                                <button class="btn btn-sm btn-secondary" onclick="confirmAction('${confirmationId}', false)">
-                                    <i class="bi bi-x"></i> Cancelar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.appendChild(confirmation);
-            
-            // Guardar callbacks para usar después
-            window.confirmCallbacks = window.confirmCallbacks || {};
-            window.confirmCallbacks[confirmationId] = { onConfirm, onCancel };
-
-            return confirmationId;
-        }
-
-        // Manejar acción de confirmación
-        function confirmAction(confirmationId, accepted) {
-            const callbacks = window.confirmCallbacks[confirmationId];
-            
-            if (accepted && callbacks.onConfirm) {
-                callbacks.onConfirm();
-            } else if (!accepted && callbacks.onCancel) {
-                callbacks.onCancel();
-            }
-            
-            // Limpiar
-            delete window.confirmCallbacks[confirmationId];
-            closeNotification(confirmationId);
-        }
+        // Función showConfirmation se usa desde app.js - no duplicar aquí
         
         // Obtener productos del localStorage
         function getProducts() {
@@ -1778,17 +1834,23 @@
                 );
             } catch (error) {
                 console.error('Error in logout function:', error);
-                // Fallback - usar confirmación simple del navegador
-                if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                    localStorage.removeItem('ecomarket_logged_in');
-                    localStorage.removeItem('ecomarket_user_type');
-                    localStorage.removeItem('ecomarket_user_email');
-                    localStorage.removeItem('ecomarket_user_name');
-                    localStorage.removeItem('ecomarket_current_user');
-                    
-                    alert('Sesión cerrada correctamente');
-                    window.location.href = 'login.html';
-                }
+                // Fallback - usar nuestro sistema de confirmación
+                showConfirmation(
+                    'Confirmar Logout',
+                    '¿Estás seguro de que deseas cerrar sesión?',
+                    function() {
+                        localStorage.removeItem('ecomarket_logged_in');
+                        localStorage.removeItem('ecomarket_user_type');
+                        localStorage.removeItem('ecomarket_user_email');
+                        localStorage.removeItem('ecomarket_user_name');
+                        localStorage.removeItem('ecomarket_current_user');
+                        
+                        showNotification('Cerrando sesión...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 1500);
+                    }
+                );
             }
         }
         
@@ -1990,6 +2052,7 @@
         // Función para cancelar pedido (alias para updateOrderStatus)
         function cancelOrder(orderId) {
             showConfirmation(
+                'Confirmar Cancelación',
                 '¿Estás seguro de que deseas cancelar este pedido?',
                 function() {
                     updateOrderStatus(orderId, 'cancelado');
@@ -2148,14 +2211,18 @@
         
         // Cancelar pedido
         function cancelOrder(orderId) {
-            if (!confirm('¿Estás seguro de que deseas cancelar este pedido?')) return;
-            
-            const orders = getOrders();
-            const updatedOrders = orders.filter(o => o.id !== orderId);
-            localStorage.setItem('ecomarket_orders', JSON.stringify(updatedOrders));
-            renderOrdersList();
-            updateReportsData();
-            alert('Pedido cancelado correctamente');
+            showConfirmation(
+                'Confirmar Cancelación',
+                '¿Estás seguro de que deseas cancelar este pedido?',
+                function() {
+                    const orders = getOrders();
+                    const updatedOrders = orders.filter(o => o.id !== orderId);
+                    localStorage.setItem('ecomarket_orders', JSON.stringify(updatedOrders));
+                    renderOrdersList();
+                    updateReportsData();
+                    showNotification('Pedido cancelado correctamente', 'success');
+                }
+            );
         }
         
         // Filtrar pedidos
