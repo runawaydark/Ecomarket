@@ -426,7 +426,7 @@
                         localStorage.setItem('ecomarket_user_email', 'admin');
                         localStorage.setItem('ecomarket_logged_in', 'true');
                         
-                        showNotification('¡Bienvenido Usuario Prueba! Iniciando sesión...', 'success');
+                        showNotification('¡Bienvenido Admin! Iniciando sesión...', 'success');
                         setTimeout(() => {
                             window.location.href = 'admin.html';
                         }, 1500);
@@ -458,7 +458,10 @@
                                 email: validUser.email
                             }));
                             
-                            showNotification(`¡Bienvenido ${validUser.name}! Iniciando sesión...`, 'success');
+                            // Personalizar mensaje según el usuario
+                            let welcomeMessage = `¡Bienvenido ${validUser.name}! Iniciando sesión...`;
+                            
+                            showNotification(welcomeMessage, 'success');
                             setTimeout(() => {
                                 window.location.href = 'index.html';
                             }, 1500);
@@ -517,7 +520,7 @@
                             email: newUser.email
                         }));
                         
-                        showNotification(`¡Cuenta creada exitosamente para ${name}! Iniciando sesión...`, 'success');
+                        showNotification(`¡Bienvenido ${name}! Cuenta creada exitosamente. Iniciando sesión...`, 'success');
                         setTimeout(() => {
                             window.location.href = 'index.html';
                         }, 1500);

@@ -8,6 +8,36 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Estilos adicionales para productos destacados -->
+    <style>
+        .featured-product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .featured-product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        }
+        .offer-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            font-weight: bold;
+            font-size: 0.8rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .price-original {
+            font-size: 0.9rem;
+            color: #6c757d !important;
+        }
+        .price-offer {
+            color: #dc3545 !important;
+            font-weight: bold;
+        }
+    </style>
     </head>
     <body>
     <!-- NAVBAR -->
@@ -177,85 +207,209 @@
         </div>
     </section>
 
-<!-- PRODUCTOS DESTACADOS -->
+    <!-- PRODUCTOS DESTACADOS -->
     <section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center mb-5">Productos destacados</h2>
-        <div class="row g-4">
-        
-        <!-- Producto 1 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card h-100 shadow-sm">
-            <img src="assets/img/lechuga.jpg" class="card-img-top" alt="Lechuga">
-            <div class="card-body text-center">
-                <h5 class="card-title">Lechuga</h5>
-                <p class="card-text">Fresca y crujiente</p>
-                <span class="fw-bold text-success">$1.000</span>
-                <div class="mt-3">
-                <a href="#" class="btn btn-success btn-sm">
-                    <i class="bi bi-cart-plus"></i> Agregar
+        <div class="container">
+            <h2 class="text-center mb-5">Productos destacados</h2>
+            <div class="row g-4" id="featured-products">
+                <!-- Los productos se cargarán dinámicamente -->
+            </div>
+            
+            <!-- Enlace al catálogo completo -->
+            <div class="text-center mt-5">
+                <a href="catalogo.html" class="btn btn-outline-success btn-lg">
+                    <i class="bi bi-grid-3x3-gap me-2"></i>Ver catálogo completo
                 </a>
-                </div>
-            </div>
             </div>
         </div>
-
-        <!-- Producto 2 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card h-100 shadow-sm">
-            <img src="assets/img/frutillas.jpg" class="card-img-top" alt="Frutillas">
-            <div class="card-body text-center">
-                <h5 class="card-title">Frutillas</h5>
-                <p class="card-text">Dulces y jugosas</p>
-                <span class="fw-bold text-success">$2.500</span>
-                <div class="mt-3">
-                <a href="#" class="btn btn-success btn-sm">
-                    <i class="bi bi-cart-plus"></i> Agregar
-                </a>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- Producto 3 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card h-100 shadow-sm">
-            <img src="assets/img/tomates.jpg" class="card-img-top" alt="Tomates">
-            <div class="card-body text-center">
-                <h5 class="card-title">Tomates</h5>
-                <p class="card-text">Rojos y frescos</p>
-                <span class="fw-bold text-success">$1.500</span>
-                <div class="mt-3">
-                <a href="#" class="btn btn-success btn-sm">
-                    <i class="bi bi-cart-plus"></i> Agregar
-                </a>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- Producto 4 -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card h-100 shadow-sm">
-            <img src="assets/img/zanahoria.jpg" class="card-img-top" alt="Zanahorias">
-            <div class="card-body text-center">
-                <h5 class="card-title">Zanahorias</h5>
-                <p class="card-text">Frescas y llenas de vitaminas</p>
-                <span class="fw-bold text-success">$1.200</span>
-                <div class="mt-3">
-                <a href="#" class="btn btn-success btn-sm">
-                    <i class="bi bi-cart-plus"></i> Agregar
-                </a>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        </div>
-    </div>
     </section>
 
-    <!-- Footer Container -->
+    <!-- Incluir catalog.js para funciones de productos -->
+    <script src="assets/js/catalog.js"></script>
+    
+    <script>
+        // IDs de productos destacados (se tomarán del sistema real de productos)
+        const featuredProductIds = ['lechuga', 'frutillas', 'tomates', 'zanahorias'];
+
+        // Función para obtener productos del sistema real
+        function getFeaturedProducts() {
+            // Usar la función getProducts() del catálogo para obtener datos actualizados
+            const allProducts = getProducts();
+            return allProducts.filter(product => featuredProductIds.includes(product.id));
+        }
+
+        // Función para renderizar productos destacados
+        function renderFeaturedProducts() {
+            const container = document.getElementById('featured-products');
+            const featuredProducts = getFeaturedProducts();
+            
+            if (featuredProducts.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No hay productos destacados disponibles</p></div>';
+                return;
+            }
+            
+            const productsHTML = featuredProducts.map(product => {
+                // Determinar estado del producto usando datos reales
+                let statusBadges = [];
+                let buttonContent = '';
+                let buttonClass = 'btn btn-success btn-sm';
+                let buttonAction = `addToCartFromFeatured('${product.id}')`;
+
+                // Badge de oferta (prioridad máxima)
+                if (product.isOffer && product.originalPrice) {
+                    const discountPercent = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                    statusBadges.push(`<span class="badge offer-badge position-absolute top-0 start-0 m-2" style="z-index: 10;">-${discountPercent}% OFF</span>`);
+                }
+
+                // Badge de stock
+                if (!product.available || product.stock === 0) {
+                    statusBadges.push('<span class="badge bg-danger position-absolute top-0 end-0 m-2">Sin stock</span>');
+                    buttonContent = '<i class="bi bi-x-circle me-1"></i>No disponible';
+                    buttonClass = 'btn btn-secondary btn-sm';
+                    buttonAction = `showNotAvailable('${product.name}')`;
+                } else if (product.stock <= 5) {
+                    statusBadges.push('<span class="badge bg-warning position-absolute top-0 end-0 m-2">¡Últimas unidades!</span>');
+                    buttonContent = '<i class="bi bi-cart-plus me-1"></i>Agregar';
+                } else {
+                    buttonContent = '<i class="bi bi-cart-plus me-1"></i>Agregar';
+                }
+
+                const statusBadgesHTML = statusBadges.join('');
+
+                return `
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card h-100 shadow-sm position-relative featured-product-card">
+                            ${statusBadgesHTML}
+                            <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text text-muted small flex-grow-1">${product.description}</p>
+                                
+                                <div class="mt-auto">
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                ${product.isOffer && product.originalPrice ? 
+                                                    `<div><span class="price-original text-decoration-line-through">$${product.originalPrice.toLocaleString()}</span></div>
+                                                     <div><span class="price-offer fs-5">$${product.price.toLocaleString()}</span></div>` 
+                                                    : 
+                                                    `<span class="fw-bold text-success fs-5">$${product.price.toLocaleString()}</span>`
+                                                }
+                                            </div>
+                                            <small class="text-muted">por ${product.unit}</small>
+                                        </div>
+                                    </div>
+                                    
+                                    ${product.available && product.stock > 0 ? `
+                                        <div class="text-center mb-2">
+                                            <small class="text-success">
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                ${product.stock} disponibles
+                                            </small>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <div class="d-grid">
+                                        <button class="${buttonClass}" onclick="${buttonAction}">
+                                            ${buttonContent}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = productsHTML;
+        }
+
+        // Función para agregar al carrito desde productos destacados (usa la misma lógica que el catálogo)
+        function addToCartFromFeatured(productId) {
+            // Usar la función addToCart del catálogo que ya maneja todo correctamente
+            addToCart(productId);
+            
+            // Actualizar la vista de productos destacados para reflejar cambios de stock
+            setTimeout(() => {
+                renderFeaturedProducts();
+            }, 500);
+        }
+
+        // Función para mostrar mensaje de no disponible
+        function showNotAvailable(productName) {
+            if (typeof showToast === 'function') {
+                showToast(`${productName} no está disponible en este momento`, 'info');
+            } else {
+                showNotification(`${productName} no está disponible en este momento`, 'info');
+            }
+        }
+
+        // Función para mostrar notificaciones (usar la de app.js si existe)
+        function showNotification(message, type = 'success', duration = 4000) {
+            // Si existe la función global de app.js, usarla
+            if (typeof window.showNotification === 'function') {
+                window.showNotification(message, type, duration);
+                return;
+            }
+
+            // Fallback: notificación simple
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'info'} position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, duration);
+        }
+
+        // Función para actualizar contador del carrito
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('ecomarket_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+                cartCountElement.style.display = totalItems > 0 ? 'block' : 'none';
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar productos si no existen
+            initializeProducts();
+            
+            // Renderizar productos destacados
+            renderFeaturedProducts();
+            
+            // Actualizar contador del carrito
+            updateCartCount();
+        });
+
+        // Escuchar cambios en los productos desde el admin
+        window.addEventListener('productsUpdated', function(event) {
+            console.log('Productos actualizados desde admin, recargando productos destacados');
+            renderFeaturedProducts();
+        });
+
+        // Escuchar cambios en el localStorage de productos (si se actualiza desde otra pestaña)
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'ecomarket_products') {
+                console.log('Productos actualizados en localStorage, recargando productos destacados');
+                renderFeaturedProducts();
+            }
+        });
+    </script>    <!-- Footer Container -->
     <div id="footer-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
