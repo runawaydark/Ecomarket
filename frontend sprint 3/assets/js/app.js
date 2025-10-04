@@ -452,9 +452,9 @@ function getFooterHTML() {
                 PÁGINAS <i class="bi bi-chevron-down accordion-icon" id="paginas-icon"></i>
             </h4>
             <ul class="footer-accordion-content" id="paginas-content">
-                <li><a href="#">Nosotros</a></li>
-                <li><a href="#">Catálogo</a></li>
-                <li><a href="#">Contacto</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="catalogo.html">Catálogo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
                 <li><a href="#">Blog</a></li>
             </ul>
         </div>
