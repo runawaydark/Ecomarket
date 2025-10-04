@@ -466,13 +466,54 @@
         }
         
         // Eliminar producto del carrito
-        function removeFromCart(index) {
-            const item = cart[index];
-            const product = products.find(p => p.id === item.productId);
+        function removeFromCart(productIdOrIndex) {
+            let index, item, productId;
+            
+            // Determinar si recibimos un ID de producto o un índice
+            if (typeof productIdOrIndex === 'string') {
+                // Es un productId, buscar el índice
+                index = cart.findIndex(item => item.productId === productIdOrIndex);
+                if (index === -1) {
+                    console.error('Producto no encontrado en el carrito:', productIdOrIndex);
+                    showToast('Error: Producto no encontrado en el carrito', 'error');
+                    return;
+                }
+                item = cart[index];
+                productId = productIdOrIndex;
+            } else {
+                // Es un índice
+                index = productIdOrIndex;
+                item = cart[index];
+                if (!item) {
+                    console.error('Índice inválido:', index);
+                    showToast('Error: Producto no válido', 'error');
+                    return;
+                }
+                productId = item.productId;
+            }
+            
+            // Obtener información del producto para mostrar mensaje
+            const product = products.find(p => p.id === productId);
+            const productName = product?.name || item.name || 'Producto';
+            
+            console.log('🗑️ Eliminando producto del carrito:', productName, 'en índice:', index);
+            console.log('🛒 Carrito antes de eliminar:', cart.length, 'items');
+            console.log('📦 Item a eliminar:', item);
+            
+            // Eliminar del carrito
             cart.splice(index, 1);
+            console.log('🛒 Carrito después de eliminar:', cart.length, 'items');
+            
+            // Guardar cambios y actualizar vista
             saveCart();
             renderCart();
-            showToast(`${product?.name} eliminado del carrito`, 'info');
+            
+            // Mostrar notificación
+            if (typeof showToast === 'function') {
+                showToast(`${productName} eliminado del carrito`, 'info');
+            } else if (typeof showNotification === 'function') {
+                showNotification(`${productName} eliminado del carrito`, 'info');
+            }
         }
         
         // Aumentar cantidad de producto
