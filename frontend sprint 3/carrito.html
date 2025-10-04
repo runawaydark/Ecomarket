@@ -269,6 +269,8 @@
         function loadCart() {
             const savedCart = localStorage.getItem('ecomarket_cart');
             cart = savedCart ? JSON.parse(savedCart) : [];
+            console.log('🛒 Carrito cargado desde localStorage:', cart);
+            console.log('📦 Número de productos en carrito:', cart.length);
         }
         
         // Cargar productos desde localStorage
@@ -288,11 +290,13 @@
         
         // Renderizar carrito
         function renderCart() {
+            console.log('🎨 Iniciando renderCart con', cart.length, 'productos');
             const cartItems = document.getElementById('cart-items');
             const emptyCart = document.getElementById('empty-cart');
             const cartContent = document.getElementById('cart-content');
             
             if (cart.length === 0) {
+                console.log('📭 Carrito vacío, mostrando mensaje de carrito vacío');
                 emptyCart.style.display = 'block';
                 cartContent.style.display = 'none';
                 return;
@@ -301,6 +305,11 @@
             emptyCart.style.display = 'none';
             cartContent.style.display = 'flex';
             
+            console.log('🛍️ Items del carrito:', cart);
+            cart.forEach((item, index) => {
+                console.log(`Item ${index}:`, item);
+            });
+            
             cartItems.innerHTML = cart.map(item => createCartItemHTML(item)).join('');
             updateSummary();
             loadRecommendedProducts(); // Actualizar recomendaciones cuando cambie el carrito
@@ -308,8 +317,13 @@
         
         // Crear HTML para un item del carrito
         function createCartItemHTML(item) {
+            console.log('🎯 Creando HTML para item:', item);
             const product = products.find(p => p.id === item.productId);
-            if (!product) return '';
+            console.log('📦 Producto encontrado:', product);
+            if (!product) {
+                console.error('❌ Producto no encontrado para ID:', item.productId);
+                return '';
+            }
             
             const itemTotal = product.price * item.quantity;
             const originalTotal = product.originalPrice ? product.originalPrice * item.quantity : itemTotal;
