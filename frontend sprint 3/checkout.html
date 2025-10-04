@@ -10,6 +10,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
+        /* Arreglar espaciado superior */
+        body {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+        
+        .navbar {
+            margin-top: 0 !important;
+        }
+        
+        /* Ajustes para móvil */
+        .checkout-container {
+            padding-top: 1rem;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                padding-top: 0.5rem;
+                margin-top: 5px;
+            }
+            
+            .checkout-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .breadcrumb-mobile {
+                font-size: 0.875rem;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .checkout-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-top: 0;
+            }
+        }
         /* Sistema de Notificaciones Elegante */
         .notification {
             background: white;
@@ -200,10 +240,10 @@
     <div id="notification-container" style="position: fixed; top: 80px; right: 20px; z-index: 9999; width: 350px;"></div>
 
     <!-- CONTENIDO CHECKOUT -->
-    <div class="container py-5" style="margin-top: 76px;">
+    <div class="container checkout-container py-3 py-md-5">
         <div class="row">
         <div class="col-12">
-            <nav aria-label="breadcrumb" class="mb-4">
+            <nav aria-label="breadcrumb" class="breadcrumb-mobile mb-2 mb-md-4">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none text-success">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="carrito.html" class="text-decoration-none text-success">Carrito</a></li>
@@ -211,15 +251,15 @@
             </ol>
             </nav>
             
-            <div class="d-flex align-items-center mb-4">
+            <div class="d-flex align-items-center mb-3 mb-md-4">
             <div class="me-3">
-                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                <i class="bi bi-credit-card text-white fs-4"></i>
+                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                <i class="bi bi-credit-card text-white fs-5"></i>
                 </div>
             </div>
             <div>
-                <h2 class="mb-1 fw-bold">Finalizar compra</h2>
-                <p class="text-muted mb-0">Completa tu pedido de manera segura</p>
+                <h2 class="mb-1 fw-bold checkout-title">Finalizar compra</h2>
+                <p class="text-muted mb-0 small">Completa tu pedido de manera segura</p>
             </div>
             </div>
         </div>

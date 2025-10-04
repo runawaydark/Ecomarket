@@ -2279,25 +2279,30 @@
 
         // Limpiar todos los pedidos
         function clearAllOrders() {
-            showConfirmation(
-                '¿Estás seguro de que deseas eliminar TODOS los pedidos? Esta acción no se puede deshacer.',
-                function() {
-                    // Limpiar todos los pedidos del localStorage
-                    localStorage.removeItem('ecomarket_orders');
-                    
-                    // Limpiar también los historiales específicos de usuarios
-                    const keys = Object.keys(localStorage);
-                    keys.forEach(key => {
-                        if (key.startsWith('ecomarket_user_orders_')) {
-                            localStorage.removeItem(key);
-                        }
-                    });
-                    
-                    renderOrdersList();
-                    updateReportsData();
-                    showNotification('Todos los pedidos han sido eliminados', 'warning');
-                }
-            );
+            // Mostrar el modal de confirmación
+            const clearModal = new bootstrap.Modal(document.getElementById('clearOrdersModal'));
+            clearModal.show();
+            
+            // Configurar el botón de confirmación
+            document.getElementById('confirmClearOrders').onclick = function() {
+                // Limpiar todos los pedidos del localStorage
+                localStorage.removeItem('ecomarket_orders');
+                
+                // Limpiar también los historiales específicos de usuarios
+                const keys = Object.keys(localStorage);
+                keys.forEach(key => {
+                    if (key.startsWith('ecomarket_user_orders_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                
+                renderOrdersList();
+                updateReportsData();
+                showNotification('Todos los pedidos han sido eliminados correctamente', 'success');
+                
+                // Cerrar el modal
+                clearModal.hide();
+            };
         }
 
         // ========================
@@ -2673,6 +2678,42 @@
             });
         });
     </script>
+
+    <!-- Modal de Confirmación para Limpiar Pedidos -->
+    <div class="modal fade" id="clearOrdersModal" tabindex="-1" aria-labelledby="clearOrdersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title" id="clearOrdersModalLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="bi bi-trash3-fill text-danger" style="font-size: 3rem;"></i>
+                        <h6 class="mt-3 mb-3">¿Estás seguro de que deseas eliminar TODOS los pedidos?</h6>
+                        <p class="text-muted">
+                            Esta acción eliminará permanentemente todos los pedidos del sistema 
+                            y no se puede deshacer.
+                        </p>
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>Esta acción es <strong>irreversible</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmClearOrders">
+                        <i class="bi bi-trash3-fill me-1"></i>Sí, Eliminar Todo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Incluir script de navbar estándar -->
     <script src="assets/js/app.js"></script>
