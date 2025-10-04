@@ -10,26 +10,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
-        /* Arreglar espaciado superior */
+        /* Ajuste para navbar sticky */
         body {
             padding-top: 0 !important;
             margin-top: 0 !important;
         }
         
-        .navbar {
-            margin-top: 0 !important;
-        }
-        
-        /* Ajustes para móvil */
+        /* Contenedor principal con espaciado para navbar */
         .checkout-container {
+            margin-top: 80px; /* Espacio para navbar sticky */
             padding-top: 1rem;
-            margin-top: 10px;
         }
         
         @media (max-width: 768px) {
             .checkout-container {
+                margin-top: 70px !important; /* Menos espacio en tablet */
                 padding-top: 0.5rem;
-                margin-top: 5px;
             }
             
             .checkout-title {
@@ -45,9 +41,10 @@
         
         @media (max-width: 576px) {
             .checkout-container {
+                margin-top: 65px !important; /* Aún menos espacio en móvil */
                 padding-left: 1rem;
                 padding-right: 1rem;
-                margin-top: 0;
+                padding-top: 0.5rem;
             }
         }
         /* Sistema de Notificaciones Elegante */
@@ -237,7 +234,7 @@
     </nav>
 
     <!-- SISTEMA DE NOTIFICACIONES -->
-    <div id="notification-container" style="position: fixed; top: 80px; right: 20px; z-index: 9999; width: 350px;"></div>
+    <div id="notification-container" style="position: fixed; top: 90px; right: 20px; z-index: 9999; width: 350px;"></div>
 
     <!-- CONTENIDO CHECKOUT -->
     <div class="container checkout-container py-3 py-md-5">

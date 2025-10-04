@@ -69,6 +69,34 @@
             color: #28a745;
             font-weight: 600;
         }
+        /* Fix para el botón hamburguesa en móvil - OVERRIDE de style.css */
+        .navbar-toggler {
+            border: 1px solid rgba(255,255,255,0.3) !important;
+            padding: 4px 8px !important;
+            background: transparent !important;
+        }
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25) !important;
+        }
+        .navbar-toggler-icon {
+            background-color: transparent !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+            width: 1.5em !important;
+            height: 1.5em !important;
+            border-radius: 0 !important;
+        }
+        /* Alternativa con pseudo-elemento si el SVG no funciona */
+        .navbar-toggler-icon::before {
+            content: "☰";
+            color: white;
+            font-size: 20px;
+            line-height: 1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
         @media (max-width: 768px) {
             .welcome-title {
                 font-size: 2.5rem;
