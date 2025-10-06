@@ -1,6 +1,27 @@
-// ===== SISTEMA DE PRODUCTOS PARA CATÁLOGO =====
+/* =============================================
+   ECOMARKET - SISTEMA DE CATÁLOGO DE PRODUCTOS
+   =============================================
+   
+   FUNCIONALIDADES:
+   - Gestión de productos y localStorage
+   - Sistema de filtros avanzados
+   - Paginación dinámica
+   - Carrito de compras
+   - Vistas grid/lista
+   - Notificaciones toast
+   
+   ============================================= */
 
-// Función para mostrar notificaciones no invasivas
+// =============================================
+// SISTEMA DE NOTIFICACIONES TOAST
+// =============================================
+
+/**
+ * Muestra notificaciones toast no invasivas
+ * @param {string} message - Mensaje a mostrar
+ * @param {string} type - Tipo: success, error, warning, info
+ * @param {number} duration - Duración en ms
+ */
 function showToast(message, type = 'success', duration = 3000) {
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
@@ -43,7 +64,14 @@ function showToast(message, type = 'success', duration = 3000) {
     }, duration);
 }
 
-// Productos por defecto
+// =============================================
+// BASE DE DATOS DE PRODUCTOS
+// =============================================
+
+/**
+ * Productos por defecto del sistema
+ * Estructura: id, name, category, description, price, stock, etc.
+ */
 const defaultProducts = [
     {
         id: 'frutillas',
@@ -166,9 +194,15 @@ const defaultProducts = [
     }
 ];
 
-// Variables globales para paginación y filtros
+// =============================================
+// VARIABLES GLOBALES DEL SISTEMA
+// =============================================
+
+/** Estado de paginación */
 let currentPage = 1;
 let itemsPerPage = 6;
+
+/** Estado de filtros activos */
 let currentFilters = {
     categories: [],
     priceRange: { min: 500, max: 5000 },
@@ -176,7 +210,16 @@ let currentFilters = {
     sortBy: 'relevancia'
 };
 
-// Inicializar productos en localStorage si no existen
+/** Vista actual (grid/list) */
+let currentView = 'grid';
+
+// =============================================
+// GESTIÓN DE PRODUCTOS Y LOCALSTORAGE
+// =============================================
+
+/**
+ * Inicializa productos en localStorage si no existen
+ */
 function initializeProducts() {
     if (!localStorage.getItem('ecomarket_products')) {
         localStorage.setItem('ecomarket_products', JSON.stringify(defaultProducts));
@@ -184,13 +227,19 @@ function initializeProducts() {
     }
 }
 
-// Obtener productos del localStorage
+/**
+ * Obtiene productos del localStorage
+ * @returns {Array} Array de productos
+ */
 function getProducts() {
     const products = localStorage.getItem('ecomarket_products');
     return products ? JSON.parse(products) : defaultProducts;
 }
 
-// Guardar productos en localStorage
+/**
+ * Guarda productos en localStorage y dispara evento de actualización
+ * @param {Array} products - Array de productos a guardar
+ */
 function saveProducts(products) {
     localStorage.setItem('ecomarket_products', JSON.stringify(products));
     // Trigger evento para que admin.html se actualice
@@ -198,7 +247,14 @@ function saveProducts(products) {
     console.log('Productos guardados en localStorage');
 }
 
-// Función para agregar producto al carrito
+// =============================================
+// GESTIÓN DEL CARRITO DE COMPRAS
+// =============================================
+
+/**
+ * Agrega un producto al carrito de compras
+ * @param {string} productId - ID del producto a agregar
+ */
 function addToCart(productId) {
     const products = getProducts();
     const product = products.find(p => p.id === productId);
@@ -808,8 +864,7 @@ window.addEventListener('productsUpdated', function(event) {
     updatePagination();
 });
 
-// Variable para el tipo de vista actual
-let currentView = 'grid';
+// Variable removida - ya está declarada en las variables globales
 
 // Función para cambiar vista
 function changeView(viewType) {

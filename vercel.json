@@ -1,4 +1,6 @@
 {
+  "_comment": "Configuración de Vercel para el proyecto EcoMarket",
+  "_description": "Redirecciona todas las rutas al directorio frontend sprint 3",
   "rewrites": [
     {
       "source": "/(.*)",

@@ -1,5 +1,28 @@
-// ===== SISTEMA DE NOTIFICACIONES Y CONFIRMACIONES GLOBALES =====
-// Función para mostrar notificaciones elegantes
+/* =============================================
+   ECOMARKET - ARCHIVO PRINCIPAL DE JAVASCRIPT
+   =============================================
+   
+   TABLA DE CONTENIDO:
+   1. SISTEMA DE NOTIFICACIONES
+   2. SISTEMA DE CONFIRMACIONES
+   3. GESTIÓN DEL CARRITO
+   4. SISTEMA DE AUTENTICACIÓN
+   5. NAVEGACIÓN Y UI
+   6. FOOTER Y COMPONENTES
+   7. EVENTOS DEL DOCUMENTO
+   
+   ============================================= */
+
+// =============================================
+// 1. SISTEMA DE NOTIFICACIONES
+// =============================================
+
+/**
+ * Muestra notificaciones elegantes en la esquina superior derecha
+ * @param {string} message - Mensaje a mostrar
+ * @param {string} type - Tipo de notificación (success, error, warning, info)
+ * @param {number} duration - Duración en milisegundos
+ */
 function showNotification(message, type = 'info', duration = 4000) {
     // Crear el contenedor de notificaciones si no existe
     let container = document.getElementById('notification-container');
@@ -91,7 +114,17 @@ function showNotification(message, type = 'info', duration = 4000) {
     }, duration);
 }
 
-// Función para mostrar confirmaciones elegantes
+// =============================================
+// 2. SISTEMA DE CONFIRMACIONES
+// =============================================
+
+/**
+ * Muestra un modal de confirmación con botones de aceptar y cancelar
+ * @param {string} title - Título del modal
+ * @param {string} message - Mensaje del modal
+ * @param {function} onConfirm - Función a ejecutar si el usuario confirma
+ * @param {function} onCancel - Función a ejecutar si el usuario cancela
+ */
 function showConfirmation(title, message, onConfirm, onCancel = null) {
     // Crear overlay
     const overlay = document.createElement('div');
@@ -177,8 +210,14 @@ function showConfirmation(title, message, onConfirm, onCancel = null) {
     document.addEventListener('keydown', handleEscape);
 }
 
-// ===== SISTEMA DE CARRITO GLOBAL =====
-// Función para actualizar el contador del carrito en todas las páginas
+// =============================================
+// 3. GESTIÓN DEL CARRITO
+// =============================================
+
+/**
+ * Actualiza el contador del carrito en todas las páginas
+ * Lee el localStorage y muestra el número total de productos
+ */
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('ecomarket_cart')) || [];
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -199,7 +238,14 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
 });
 
-// Sistema de autenticación
+// =============================================
+// 4. SISTEMA DE AUTENTICACIÓN
+// =============================================
+
+/**
+ * Verifica el estado de autenticación del usuario
+ * @returns {Object} Objeto con información del usuario logueado
+ */
 function checkAuthStatus() {
     const isLoggedIn = localStorage.getItem('ecomarket_logged_in') === 'true';
     const userType = localStorage.getItem('ecomarket_user_type');
@@ -213,7 +259,10 @@ function checkAuthStatus() {
     };
 }
 
-// Función para cerrar sesión
+/**
+ * Cierra la sesión del usuario actual
+ * Muestra confirmación antes de proceder
+ */
 function logout() {
     showConfirmation(
         '¿Estás seguro de que deseas cerrar sesión?',
@@ -234,7 +283,14 @@ function logout() {
     );
 }
 
-// Actualizar navbar según estado de autenticación
+// =============================================
+// 5. NAVEGACIÓN Y UI
+// =============================================
+
+/**
+ * Actualiza la barra de navegación según el estado de autenticación
+ * Muestra/oculta elementos según el tipo de usuario
+ */
 function updateNavbar() {
     const auth = checkAuthStatus();
     const navbar = document.querySelector('.navbar-nav');
@@ -302,7 +358,10 @@ function updateNavbar() {
     updateUserDropdown();
 }
 
-// Actualizar dropdown del usuario
+/**
+ * Actualiza el menú desplegable del usuario
+ * Cambia las opciones según si está logueado y su tipo de usuario
+ */
 function updateUserDropdown() {
     const auth = checkAuthStatus();
     const dropdownMenu = document.getElementById('userDropdownMenu');
@@ -358,7 +417,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// ==== NAVBAR MOBILE MENU FUNCTIONALITY ====
+// =============================================
+// FUNCIONALIDADES DEL MENÚ MÓVIL
+// =============================================
+
+/**
+ * Configuración del menú móvil de navegación
+ * Maneja el cierre automático del menú al hacer clic en enlaces
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarCollapse = document.querySelector('.navbar-collapse');
@@ -384,7 +450,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// ==== FOOTER ACCORDION FUNCTIONALITY ====
+// =============================================
+// 6. FOOTER Y COMPONENTES
+// =============================================
+
+/**
+ * Controla el comportamiento de acordeón del footer en móviles
+ * @param {string} sectionId - ID de la sección a mostrar/ocultar
+ */
 function toggleAccordion(sectionId) {
     // Solo funciona en móviles (pantallas menores a 769px)
     if (window.innerWidth <= 768) {
@@ -403,7 +476,10 @@ function toggleAccordion(sectionId) {
     }
 }
 
-// Función para manejar el cambio de tamaño de ventana
+/**
+ * Maneja el cambio de tamaño de ventana para el footer responsivo
+ * Abre/cierra automáticamente las secciones según el tamaño de pantalla
+ */
 function handleResize() {
     const accordionContents = document.querySelectorAll('.footer-accordion-content');
     const accordionIcons = document.querySelectorAll('.accordion-icon');
@@ -427,8 +503,16 @@ function handleResize() {
     }
 }
 
-// ==== FOOTER LOADER FUNCTIONALITY ====
-// HTML del footer almacenado directamente en JavaScript para evitar problemas con fetch() en archivos locales
+/**
+ * FUNCIONES DE CARGA DEL FOOTER
+ * HTML del footer almacenado directamente en JavaScript 
+ * para evitar problemas con fetch() en archivos locales
+ */
+
+/**
+ * Retorna el HTML completo del footer
+ * @returns {string} Código HTML del footer
+ */
 function getFooterHTML() {
     return `<footer class="footer">
     <div class="footer-top">
@@ -488,6 +572,10 @@ function getFooterHTML() {
 </footer>`;
 }
 
+/**
+ * Carga e inserta el footer en el contenedor correspondiente
+ * Busca el elemento con ID 'footer-container' e inserta el HTML
+ */
 function loadFooter() {
     console.log('=== INICIANDO CARGA DEL FOOTER ===');
     
@@ -521,7 +609,14 @@ function loadFooter() {
     }
 }
 
-// Inicializar el estado de los acordeones al cargar la página
+// =============================================
+// 7. EVENTOS DEL DOCUMENTO
+// =============================================
+
+/**
+ * Inicialización principal del documento
+ * Se ejecuta cuando el DOM está completamente cargado
+ */
 document.addEventListener("DOMContentLoaded", () => {
     console.log('🚀 DOM Content Loaded - Iniciando app.js');
     
@@ -538,6 +633,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// =============================================
+// FUNCIONALIDADES DE LOGIN
+// =============================================
+
+/**
+ * Configuración del formulario de login
+ * Maneja la visibilidad de contraseñas y validación
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
   const togglePassword = document.getElementById("togglePassword");
@@ -567,6 +670,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+/**
+ * Control alternativo de visibilidad de contraseña
+ * Implementación adicional para botones de toggle
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const pwd = document.getElementById("password");
   const toggleBtn = document.querySelector(".password-toggle");
