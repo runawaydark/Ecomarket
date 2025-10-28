@@ -1,25 +1,22 @@
+// src/routes/auth.routes.js
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { login, me, register } from '../controllers/auth.controller.js';
-import { requireAuth } from '../middlewares/auth.middleware.js';
+import * as ctrl from '../controllers/auth.controller.js';
+import { auth } from '../middlewares/auth.middleware.js';
+import validate from '../middlewares/validate.middleware.js';
 
-const router = Router();
-
-router.post(
-    '/register',
-    body('name').isLength({ min: 2 }),
+const r = Router();
+r.post('/register',
+    body('name').trim().notEmpty(),
     body('email').isEmail(),
-    body('password').isLength({ min: 6 }),
-    register
-);
+    body('password').isLength({min:6}),
+    validate, ctrl.register);
 
-router.post(
-    '/login',
+r.post('/login',
     body('email').isEmail(),
-    body('password').isLength({ min: 6 }),
-    login
-);
+    body('password').notEmpty(),
+    validate, ctrl.login);
 
-router.get('/me', requireAuth, me);
+r.get('/me', auth, ctrl.me);
 
-export default router;
+export default r;
