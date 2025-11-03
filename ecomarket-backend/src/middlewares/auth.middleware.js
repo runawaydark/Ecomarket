@@ -1,4 +1,3 @@
-// src/middlewares/auth.middleware.js
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
@@ -32,6 +31,4 @@ const requireAdmin = (req, res, next) => {
     }
     next();
 };
-
-export default { requireAuth, requireAdmin };
 
