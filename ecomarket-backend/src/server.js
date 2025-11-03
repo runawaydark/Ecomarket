@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import categoryRoutes from './routes/category.routes.js';
 import adminRoutes from './routes/admin.routes.js';
-
+import paymentsRoutes from './routes/payments.routes.js';
 
 dotenv.config();
 
@@ -51,3 +51,4 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/payments', paymentsRoutes);

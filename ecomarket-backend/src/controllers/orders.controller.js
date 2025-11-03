@@ -3,7 +3,6 @@ import Cart from '../models/Cart.js';
 import { badRequest, ok } from '../utils/http.js';
 
 export async function checkout(req, res) {
-  // Creamos un pedido a partir del carrito activo del usuario
     const cart = await Cart.findOne({ user: req.user.id, status: 'ACTIVE' }).populate('items.product', 'price name');
     if (!cart || cart.items.length === 0) return badRequest(res, 'Carrito vacío');
 
@@ -18,7 +17,7 @@ export async function checkout(req, res) {
     user: req.user.id,
     items,
     total,
-    status: 'PAID',            // en MVP lo dejamos pagado (mock)
+    status: 'PAID',
     paymentRef: `MOCK-${Date.now()}`
     });
 
