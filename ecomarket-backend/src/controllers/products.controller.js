@@ -49,3 +49,18 @@ export async function removeProduct(req, res) {
     if (!p) return notFound(res, 'Producto no encontrado');
     return ok(res, true);
 }
+
+export const list = async (req, res) => {
+    const { category, q, min, max } = req.query;
+    const filter = {};
+
+    if (category) filter.category = category; // id de category
+    if (q) filter.name = { $regex: q, $options: 'i' };
+    if (min || max) filter.price = {
+    ...(min ? { $gte: Number(min) } : {}),
+    ...(max ? { $lte: Number(max) } : {})
+    };
+
+    const products = await Product.find(filter).populate('category', 'name slug');
+    res.json(products);
+};

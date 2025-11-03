@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import Category from './models/Category.js';
 import Product from './models/Product.js';
 
+dotenv.config();
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
 async function run() {
@@ -25,3 +27,23 @@ async function run() {
     await mongoose.disconnect();
 }
 run().catch(e => console.error(e));
+
+await mongoose.connect(process.env.MONGO_URI);
+
+const cats = await Category.insertMany([
+    { name: 'Frutas',    slug: 'frutas' },
+    { name: 'Verduras',  slug: 'verduras' },
+    { name: 'Despensa',  slug: 'despensa' },
+    { name: 'Ofertas',   slug: 'ofertas' }
+]);
+
+await Product.create({
+    name: 'Manzana Fuji',
+    price: 1200,
+    stock: 100,
+    image: '',
+    category: cats[0]._id
+});
+
+console.log('Seed OK');
+process.exit(0);

@@ -39,3 +39,20 @@ Content-Type: {{json}}
 
 ### 6) Eliminar producto
 DELETE {{host}}/api/products/{{productId}}
+
+### Listar categorías
+GET http://127.0.0.1:4000/api/categories
+
+### Crear categoría (admin)
+POST http://127.0.0.1:4000/api/categories
+Content-Type: application/json
+Authorization: Bearer {{token_admin}}
+
+{
+  "name": "Lácteos",
+  "slug": "lacteos",
+  "description": "Productos lácteos"
+}
+
+### Filtrar productos por categoría
+GET http://127.0.0.1:4000/api/products?category={{id_categoria}}
