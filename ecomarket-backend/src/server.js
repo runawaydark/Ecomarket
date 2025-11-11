@@ -23,7 +23,7 @@ app.get('/health', (req, res) => {
 });
 
 // MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ecomarket';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecomarket';
 mongoose.connect(MONGODB_URI)
     .then(() => {
     console.log('✅ MongoDB conectado');
@@ -34,7 +34,7 @@ mongoose.connect(MONGODB_URI)
     });
 
 // server
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 API escuchando en http://localhost:${PORT}`);
 });

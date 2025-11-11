@@ -1,5 +1,5 @@
 import Payment from '../models/payment.model.js';
-import Order from '../models/order.model.js';
+import Order from '../models/order.js';
 
 
 export const createPayment = async (req, res) => {

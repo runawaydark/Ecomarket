@@ -1,16 +1,17 @@
 import { Router } from 'express';
-import * as ctrl from '../controllers/category.controller.js';
-import auth from '../middlewares/auth.middleware.js';
-
+import Category from '../models/category.js';
 const router = Router();
 
-// públicas
-router.get('/', ctrl.list);
-router.get('/:id', ctrl.getById);
+// Crear
+router.post('/', async (req, res) => {
+    const cat = await Category.create(req.body);
+    res.status(201).json(cat);
+});
 
-// protegidas (admin)
-router.post('/', auth.requireAdmin, ctrl.create);
-router.put('/:id', auth.requireAdmin, ctrl.update);
-router.delete('/:id', auth.requireAdmin, ctrl.remove);
+// Listar
+router.get('/', async (_req, res) => {
+    const list = await Category.find().lean();
+    res.json(list);
+});
 
 export default router;

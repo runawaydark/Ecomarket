@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user.model.js';
+import User from '../models/user.js';
 
 export const auth = async (req,res,next)=>{
     try{
@@ -20,15 +20,18 @@ export const onlyAdmin = (req,res,next)=>{
 };
 
 
-const requireAuth = (req, res, next) => {
+export const requireAuth = (req, res, next) => {
     if (!req.user) return res.status(401).json({ message: 'No autenticado' });
     next();
 };
 
-const requireAdmin = (req, res, next) => {
+export const requireAdmin = (req, res, next) => {
     if (!req.user || req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Requiere rol admin' });
+        return res.status(403).json({ message: 'Requiere rol admin' });
     }
     next();
 };
+
+// Default export expected by some route files (legacy)
+export default { requireAuth, requireAdmin };
 

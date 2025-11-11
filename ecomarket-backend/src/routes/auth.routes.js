@@ -5,6 +5,7 @@ import * as ctrl from '../controllers/auth.controller.js';
 import { auth } from '../middlewares/auth.middleware.js';
 import validate from '../middlewares/validate.middleware.js';
 
+
 const r = Router();
 r.post('/register',
     body('name').trim().notEmpty(),

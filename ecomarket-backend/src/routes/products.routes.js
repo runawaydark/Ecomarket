@@ -1,33 +1,15 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
-import { listProducts, getProduct, createProduct, updateProduct, removeProduct } from '../controllers/products.controller.js';
-import { requireAuth, requireAdmin } from '../middlewares/auth.middleware.js';
-
+import Product from '../models/product.js';
 const router = Router();
 
-// público
-router.get('/', listProducts);
-router.get('/:id', getProduct);
-router.get('/health', (req, res) => {
-    res.json({ ok: true, where: 'products' });
+router.post('/', async (req, res) => {
+    const prod = await Product.create(req.body);
+    res.status(201).json(prod);
 });
 
-// admin
-router.post(
-    '/',
-    requireAuth, requireAdmin,
-    body('name').notEmpty(),
-    body('price').isFloat({ gt: 0 }),
-    body('category').notEmpty(),
-    createProduct
-);
-
-router.put(
-    '/:id',
-    requireAuth, requireAdmin,
-    updateProduct
-);
-
-router.delete('/:id', requireAuth, requireAdmin, removeProduct);
+router.get('/', async (_req, res) => {
+    const list = await Product.find().populate('category').lean();
+    res.json(list);
+});
 
 export default router;

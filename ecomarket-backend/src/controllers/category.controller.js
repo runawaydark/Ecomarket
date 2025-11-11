@@ -1,5 +1,5 @@
-import Category from '../models/category.model.js';
-import Product from '../models/product.model.js';
+import Category from '../models/category.js';
+import Product from '../models/product.js';
 
 export const list = async (req, res) => {
     const { q } = req.query;

@@ -1,6 +1,6 @@
 import { validationResult } from 'express-validator';
-import Product from '../models/Product.js';
-import Category from '../models/Category.js';
+import Product from '../models/product.js';
+import Category from '../models/category.js';
 import { badRequest, notFound, ok, created } from '../utils/http.js';
 
 export async function listProducts(req, res) {

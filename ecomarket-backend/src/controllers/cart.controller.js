@@ -1,5 +1,5 @@
-import Cart from '../models/Cart.js';
-import Product from '../models/Product.js';
+import Cart from '../models/cart.js';
+import Product from '../models/product.js';
 import { badRequest, ok } from '../utils/http.js';
 
 async function getOrCreateActiveCart(userId) {
