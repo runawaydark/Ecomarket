@@ -12,4 +12,10 @@ router.get('/', async (_req, res) => {
     res.json(list);
 });
 
+router.get('/', async (_req, res) => {
+    const list = await Product.find().populate('category').lean();
+    res.json(list);
+});
+
+
 export default router;

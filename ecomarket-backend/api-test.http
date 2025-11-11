@@ -1,58 +1,13 @@
-### Variables
-@host = http://localhost:4000
-@json = application/json
-
-### 1) Healthcheck
-GET {{host}}/health
-
-### 2) Listar productos
-GET {{host}}/api/products
-
-### 3) Crear producto
-# Copia el _id que retorna la respuesta y pégalo en la variable @productId más abajo
-POST {{host}}/api/products
-Content-Type: {{json}}
-
-{
-  "name": "Manzanas Orgánicas",
-  "description": "Caja de 1kg de manzanas orgánicas premium",
-  "price": 2500,
-  "category": "frutas",
-  "image": "https://ecomarket.cl/img/manzanas.png",
-  "stock": 50
-}
-
-### 4) Obtener producto por ID
-# Reemplaza el valor de productId por el _id real que te devolvió el POST
-@productId = 665e1a7f5e20a3b81f6d1234
-
-GET {{host}}/api/products/{{productId}}
-
-### 5) Actualizar producto (precio y stock)
-PUT {{host}}/api/products/{{productId}}
-Content-Type: {{json}}
-
-{
-  "price": 2700,
-  "stock": 40
-}
-
-### 6) Eliminar producto
-DELETE {{host}}/api/products/{{productId}}
-
-### Listar categorías
-GET http://127.0.0.1:4000/api/categories
-
-### Crear categoría (admin)
-POST http://127.0.0.1:4000/api/categories
+### Crear categoría
+POST http://localhost:3000/api/category
 Content-Type: application/json
-Authorization: Bearer {{token_admin}}
 
 {
-  "name": "Lácteos",
-  "slug": "lacteos",
-  "description": "Productos lácteos"
+  "name": "Verduras",
+  "description": "Verduras frescas"
 }
 
-### Filtrar productos por categoría
-GET http://127.0.0.1:4000/api/products?category={{id_categoria}}
+### Listar productos
+GET http://localhost:3000/api/products
+
+
