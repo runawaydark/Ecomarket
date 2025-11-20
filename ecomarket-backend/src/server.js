@@ -6,14 +6,23 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import categoryRoutes from './routes/category.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import cors from "cors";
+import { connectDB } from "./src/db.js";
 
 
 dotenv.config();
-
 const app = express();
 
+// 🔹 CORS (para que el front en Vercel pueda llamar al backend)
+app.use(cors({
+    origin: [
+    'http://localhost:5500',                 // si usas Live Server
+    'https://TU-PROYECTO.vercel.app'         // <- luego pones aquí tu URL real de Vercel
+    ],
+    credentials: true
+}));
+
 // middlewares
-app.use(cors());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(express.json());
